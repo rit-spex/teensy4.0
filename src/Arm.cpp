@@ -3,9 +3,9 @@
 Arm::Arm()
 {
     // Set used pins to output
-    pinMode(WRIST_DIR_PIN, OUTPUT);
-    pinMode(WRIST_SPEED_PIN, OUTPUT);
-    pinMode(SHOULDER_DIR_PIN, OUTPUT);
+    pinMode(WRIST_DIR_PIN,      OUTPUT);
+    pinMode(WRIST_SPEED_PIN,    OUTPUT);
+    pinMode(SHOULDER_DIR_PIN,   OUTPUT);
     pinMode(SHOULDER_SPEED_PIN, OUTPUT);  
 
     // Initialize and start timer to outut correct PWM signals
@@ -28,7 +28,9 @@ void Arm::startUp()
 
 void Arm::moveShoulder(Direction direction)
 {
+  #if ENABLE_SERIAL
   Serial.println("Moving shoulder");
+  #endif
   // If direction is not OFF, move motor
   if(direction != OFF)
   {
@@ -45,7 +47,9 @@ void Arm::moveShoulder(Direction direction)
 
 void Arm::moveWrist(Direction direction)
 {
+  #if ENABLE_SERIAL
   Serial.println("Moving wrist");
+  #endif
   // If direction is not OFF, move motor
   if(direction != OFF)
   {
@@ -62,7 +66,10 @@ void Arm::moveWrist(Direction direction)
 
 void Arm::moveBase(Direction direction)
 {
+  #if ENABLE_SERIAL
   Serial.println("Moving base");
+  #endif
+
   uint8_t cmd = 0x85;
   int speed = 0;
   if(direction == FORWARD)
@@ -89,7 +96,10 @@ void Arm::moveBase(Direction direction)
 
 void Arm::moveClaw(Direction direction)
 {
+  #if ENABLE_SERIAL
   Serial.println("Moving claw");
+  #endif
+
   if(direction == FORWARD)
   {
     tic.setTargetVelocity(CLAW_MAX_SPEED);

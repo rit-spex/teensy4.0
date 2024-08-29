@@ -3,21 +3,18 @@
 
 #include <Arduino.h>
 #include <Servo.h>
-#include "Motor.h"
 #include "Pinout.h"
+#include "Constants.h"
 
-#define PERCENT_MAX 0.3
-
-#define SPARK_MAX_MIN (1500 - 500 * PERCENT_MAX)
-#define SPARK_MAX_MAX (1500 + 500 * PERCENT_MAX)
-
+// Motor class for controlling the motors, this is meant to be a generic class for all motors
 class Motor {
     public:
         Motor(PWM_PINS pwm_pin);
         ~Motor();
-        void setSpeed(float duty_cycle_us);
+        void setSpeed(float percent);
+        float getSpeed();
     private:
-        int pwm_pin;
-        Servo motor;
+        Servo m_motor;
+        float m_speed;
 };
 #endif

@@ -7,39 +7,49 @@
 #define SAVE_SIZE 3
 #define START_COMMAND 0xde
 
+#define NUM_AXES 2
+#define NUM_BUTTONS 8
+
+
 //static int bigserialbuffer[16384];
 
 class Xbee
 {
 private:
+
+    // the amount of cycles with no signal
     int numNoSignal;
-    int lastSignalCount;
+
+    // a flag if the xbee is disabled
     bool isDisabled = false;
+    
+    int lastSignalCount;
+
+    // a flag that once triggered will start the xbee
     bool firstConnected = false;
 
+    // parse messages from the xbee
+    void parseMessage();
+
+    // find the median of the values in the buffer, will prevent errors
     float findAxisMedian(int index);
     bool findButtonMedian(int index);
 
+    // convert an int to a binary array
     void intToBinary(int n, bool *bin);
 
-    bool buttonvalues[8][SAVE_SIZE];
-    float axisvalues[2][SAVE_SIZE];
-
-    //std::map<int, bool> translate =
-    //{
-    //    {0xcf , 1}, {0xcd , 0}, //A
-    //    {0xd1 , 1}, {0xd2 , 0}, //B
-    //    {0xd3 , 1}, {0xd4 , 0}, //X
-    //    {0xd5 , 1}, {0xc6 , 0}, //Y
-    //    {0xd7 , 1}, {0xc8 , 0}, //LB
-    //    {0xd9 , 1}, {0xca , 0}, //RB
-    //    {0xdb , 1}, {0xcc , 0}, //SELECT
-    //    {0xdd , 1}, {0xce , 0}, //START
-    //    {0xe4 , 1}, {0xe3 , 0}  //HOME
-    //};
-
-    // change what data to update next
+    // change what data in the buffer update next
     int currentHead = 0;
+
+    // all of the current values
+    bool buttonvalues[NUM_BUTTONS][SAVE_SIZE];
+    float axisvalues[NUM_AXES][SAVE_SIZE];
+
+    // flag if new values are found
+    bool isNewValuesFound = false;
+
+    // the current values
+    float currentValues[NUM_BUTTONS + NUM_AXES];
 
 public:
     long long error_count = 0;
@@ -47,21 +57,25 @@ public:
 
     enum CONTROLLER
     {
-        LEFT_Y_AXIS = 0, // left drive 
-        RIGHT_Y_AXIS = 1, //right drive
-        LEFT_TRIGGER = 2, // j1 left
+        LEFT_Y_AXIS   = 0, // left drive 
+        RIGHT_Y_AXIS  = 1, //right drive
+        LEFT_TRIGGER  = 2, // j1 left
         RIGHT_TRIGGER = 3, // j1 right
-        A_BUTTON = 4, // grip open
-        B_BUTTON = 5, // grip close
-        X_BUTTON = 6, // j3 down
-        Y_BUTTON = 7, // j3 up
-        LB_BUTTON = 8, // j2 down
-        RB_BUTTON = 9, // j2 up
+        A_BUTTON      = 4, // grip open
+        B_BUTTON      = 5, // grip close
+        X_BUTTON      = 6, // j3 down
+        Y_BUTTON      = 7, // j3 up
+        LB_BUTTON     = 8, // j2 down
+        RB_BUTTON     = 9, // j2 up
     };
 
     Xbee();
     void UpdateValues();
+
     float getCurrentValue(CONTROLLER controller);
+    bool isActive();
+    bool isNewValues();
+    void printValues();
 };
 
 

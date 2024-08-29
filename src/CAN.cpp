@@ -184,5 +184,7 @@ bool CAN::IsEStop(const CAN_message_t &msg)
 
 void CAN::TEST()
 {
+  #if ENABLE_SERIAL
   Serial.println(m_CAN.events());
+  #endif
 }

@@ -4,19 +4,8 @@
 #include <TimerThree.h>
 #include <Wire.h>
 #include <Tic.h>
-
-// define these pins, wristDir and shoulderDir can be any digital output
-// wristSpeed and shoulderSpeed need to be pins 9 and 6
-#define WRIST_DIR_PIN 33
-#define WRIST_SPEED_PIN 6 // MUST BE PIN 6
-#define SHOULDER_DIR_PIN 34
-#define SHOULDER_SPEED_PIN 9 // MUST BE PIN 9
-
-// I2C device number
-#define BASE_I2C_ID 15 // brushed motor
-#define BASE_MAX_SPEED 800
-#define CLAW_I2C_ID 16 // stepper motor
-#define CLAW_MAX_SPEED (200 * 10000) // 100 steps per second
+#include "Pinout.h"
+#include "Constants.h"
 
 class Arm
 {

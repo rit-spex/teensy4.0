@@ -4,12 +4,14 @@
 #include "Pinout.h"
 #include <Encoder.h>
 #include <IntervalTimer.h>
+#include "Constants.h"
 
 class QuadratureDecoder {
 public:
   QuadratureDecoder(ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin);
-  void begin();
+//  void begin();
   long getCount();
+  float getRPM(int time_interval_ms);
 
 private:
   Encoder m_encoder;

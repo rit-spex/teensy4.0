@@ -11,33 +11,55 @@ the target velocity transmitted over CAN.
 
 #ifndef DRIVE_BASE_H
 #define DRIVE_BASE_H
-
 #include <Arduino.h>
+
+#include "Constants.h"
+#include "DEBUG.h"
+
 #include "Wheel.h"
 #include "Pinout.h"
-#include "Constants.h"
-//#include "CAN.h"
 
-#define NUM_WHEELS 6
+#ifdef ENABLE_CAN
+#include "CAN.h"
+#endif
 
 class DriveBase {
     public:
-        DriveBase();//CAN *can);
-        void updateVelocity();
-        void updateSingleWheel(int wheelIndex, float targetVelocity);
+        #if ENABLE_CAN
+            DriveBase(CAN *can);
+        #else
+            DriveBase();
+        #endif
+
+        #if ENABLE_ENCODER
+        // Updates the RPM of the rover's wheels. motor final speed is calculated by the PID controller
+        void updateRPM(int timeInterval_ms);
+        #else
+        // Updates the speed of the rover's wheel. Speed is percent
+        void updateSingleWheelSpeed(int wheelIndex, float targetSpeed);
+        #endif
         void drive(float left_axis, float right_axis);
     private:
         // An array of the rover's wheels
-        //Wheel wheels[NUM_WHEELS];
-        Wheel wheel1;
-        Wheel wheel2;
-        Wheel wheel3;
-        Wheel wheel4;
-        Wheel wheel5;
-        Wheel wheel6;
+        Wheel m_wheels[NUM_WHEELS];
+
+        #if ENABLE_CAN
+        CAN *m_CAN;
+        #endif
+
+        #if ENABLE_ENCODER
+        
+        // An array of the target RPMs corresponding to each wheel
+        float m_targetRPM[NUM_WHEELS];
+
+        #ifdef ENABLE_CAN
+        void getTargetRPM();
+        #endif
+
+        #else//ENABLE_ENCODER
+
         // An array of the target velocities corresponding to each wheel
-        float targetVelocity[NUM_WHEELS];
-        //CAN *m_can;
-        void getTargetVelocity();
+        void getTargetSpeed();
+        #endif //ENABLE_ENCODER
 };
 #endif

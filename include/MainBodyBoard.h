@@ -13,12 +13,23 @@ The main body board is responsible for:
 #ifndef MAIN_BODY_BOARD_H
 #define MAIN_BODY_BOARD_H
 
-#include "CAN.h"
-#include "DriveBase.h"
-#include "TempSubsystem.h"
+#include <Arduino.h>
+#include "Constants.h"
 #include "DEBUG.h"
 #include "Pinout.h"
-#include <Arduino.h>
+
+// All of the subsystems
+#if ENABLE_DRIVEBASE
+#include "DriveBase.h"
+#endif
+
+#if ENABLE_TEMP
+#include "TempSubsystem.h"
+#endif
+
+#if ENABLE_CAN
+#include "CAN.h"
+#endif
 
 class MainBodyBoard {
     public:
@@ -29,25 +40,44 @@ class MainBodyBoard {
         MainBodyBoard();
         ~MainBodyBoard();
 
-        void updateSubsystems(void);
+        // startup for all of the subsystems
+        void startUp();
+
+        // increments a time then will blink the status light
+        void BlinkStatusLight();
+        
+        // updates all of the subsystems
+        void updateSubsystems(int timeInterval_ms);
+
+        // Drives the rover based on the left and right joystick values - ONLY FOR MASTER_TEENSY
+        #if ENABLE_DRIVEBASE
+        #if MASTER_TEENSY
         void drive(float left_axis, float right_axis);
+        #endif
+        #endif
     private:
 
-        #ifndef DISABLE_STATUS_LIGHT
-        bool statusLightOn = false;
-        int statusLightWait = 0;
+        bool m_statusLightOn = false;
+        int  m_statusLightWait = 0;
+
+        #if ENABLE_CAN
+            CAN m_can = CAN( CAN::CAN_MB::MAIN_BODY );
         #endif
 
-        // #ifndef DISABLE_CAN
-        // CAN can = CAN( CAN::CAN_MB::MAIN_BODY );
-        // #endif
-
-        #ifndef DISABLE_DRIVEBASE
-        DriveBase drive_base = DriveBase();//&can);
+        #if ENABLE_DRIVEBASE
+            #if ENABLE_CAN
+                DriveBase m_drive_base = DriveBase(&m_can);
+            #else
+                DriveBase m_drive_base = DriveBase();
+            #endif
         #endif
 
-        #ifndef DISABLE_TEMP
-        TempSubsystem temp_subsystem = TempSubsystem(&can);
+        #if ENABLE_TEMP
+            #if ENABLE_CAN
+                TempSubsystem m_temp_subsystem = TempSubsystem(&m_can);
+            #else
+                TempSubsystem m_temp_subsystem = TempSubsystem();
+            #endif
         #endif
 };
 

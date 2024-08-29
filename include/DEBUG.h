@@ -8,20 +8,16 @@ If disable is defined, the corresponding subsystem will be disabled.
 If debug is defined, the corresponding subsystem will be serial printed
 */
 
-// #define DISABLE_STATUS_LIGHT
-// #define DISABLE_CAN
-// #define DISABLE_DRIVEBASE
-#define DISABLE_TEMP
+// enable when encoders are on the base
+#define ENABLE_ENCODER   false
 
-#ifndef DISABLE_STATUS_LIGHT
-// #define DEBUG_STATUS_LIGHT
-#endif
-#ifndef DISABLE_CAN
-// #define DEBUG_CAN
-#endif
-#ifndef DISABLE_DRIVEBASE
-// #define DEBUG_DRIVEBASE
-#endif
-#ifndef DISABLE_TEMP
-// #define DEBUG_TEMP
-#endif
+// if the teensy is the main brain
+#define MASTER_TEENSY    true
+
+// enable each subsystem
+#define ENABLE_CAN       false
+#define ENABLE_DRIVEBASE true
+#define ENABLE_TEMP      false
+#define ENABLE_XBEE      true
+#define ENABLE_SERIAL    false
+#define ENABLE_ARM       false
