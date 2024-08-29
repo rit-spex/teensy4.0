@@ -1,8 +1,16 @@
 #include "../../include/DriveBase.h"
 
+/*
+* Constructor for the drive base class.
+* Initializes the wheels of the rover.
+*/
 #if ENABLE_CAN
-#if ENABLE_ENCODER
 DriveBase::DriveBase(CAN *can):
+#else
+DriveBase::DriveBase():
+#endif
+
+#if ENABLE_ENCODER
 m_wheels{
         Wheel(PWM_PIN_0, ENC_A_PIN_0, ENC_B_PIN_0, PIDConstants::KP0, PIDConstants::KI0, PIDConstants::KD0),
         Wheel(PWM_PIN_1, ENC_A_PIN_1, ENC_B_PIN_1, PIDConstants::KP1, PIDConstants::KI1, PIDConstants::KD1),
@@ -10,21 +18,7 @@ m_wheels{
         Wheel(PWM_PIN_3, ENC_A_PIN_3, ENC_B_PIN_3, PIDConstants::KP3, PIDConstants::KI3, PIDConstants::KD3),
         Wheel(PWM_PIN_4, ENC_A_PIN_4, ENC_B_PIN_4, PIDConstants::KP4, PIDConstants::KI4, PIDConstants::KD4),
         Wheel(PWM_PIN_5, ENC_A_PIN_5, ENC_B_PIN_5, PIDConstants::KP5, PIDConstants::KI5, PIDConstants::KD5)}
-{
-    m_CAN = can;
-    this->m_targetRPM[0] = 0;
-    this->m_targetRPM[1] = 0;
-    this->m_targetRPM[2] = 0;
-    this->m_targetRPM[3] = 0;
-    this->m_targetRPM[4] = 0;
-    this->m_targetRPM[5] = 0;
-}
-#else//ENABLE_ENCODER
-/*
-* Constructor for the drive base class.
-* Initializes the wheels of the rover.
-*/
-DriveBase::DriveBase(CAN *can):
+#else
 m_wheels{
         Wheel(PWM_PIN_0),
         Wheel(PWM_PIN_1),
@@ -32,43 +26,20 @@ m_wheels{
         Wheel(PWM_PIN_3),
         Wheel(PWM_PIN_4),
         Wheel(PWM_PIN_5)}
+#endif
 {
+    #if ENABLE_CAN
     m_CAN = can;
-}
-#endif//ENABLE_ENCODER
-#else//DISABLE_CAN
-#if ENABLE_ENCODER
-DriveBase::DriveBase():
-m_wheels{
-        Wheel(PWM_PIN_0, ENC_A_PIN_0, ENC_B_PIN_0, PIDConstants::KP0, PIDConstants::KI0, PIDConstants::KD0),
-        Wheel(PWM_PIN_1, ENC_A_PIN_1, ENC_B_PIN_1, PIDConstants::KP1, PIDConstants::KI1, PIDConstants::KD1),
-        Wheel(PWM_PIN_2, ENC_A_PIN_2, ENC_B_PIN_2, PIDConstants::KP2, PIDConstants::KI2, PIDConstants::KD2),
-        Wheel(PWM_PIN_3, ENC_A_PIN_3, ENC_B_PIN_3, PIDConstants::KP3, PIDConstants::KI3, PIDConstants::KD3),
-        Wheel(PWM_PIN_4, ENC_A_PIN_4, ENC_B_PIN_4, PIDConstants::KP4, PIDConstants::KI4, PIDConstants::KD4),
-        Wheel(PWM_PIN_5, ENC_A_PIN_5, ENC_B_PIN_5, PIDConstants::KP5, PIDConstants::KI5, PIDConstants::KD5)}
-{
+    #endif
+    #if ENABLE_ENCODER
     this->m_targetRPM[0] = 0;
     this->m_targetRPM[1] = 0;
     this->m_targetRPM[2] = 0;
     this->m_targetRPM[3] = 0;
     this->m_targetRPM[4] = 0;
     this->m_targetRPM[5] = 0;
+    #endif
 }
-#else//ENABLE_ENCODER
-/*
-* Constructor for the drive base class.
-* Initializes the wheels of the rover.
-*/
-DriveBase::DriveBase():
-m_wheels{
-        Wheel(PWM_PIN_0),
-        Wheel(PWM_PIN_1),
-        Wheel(PWM_PIN_2),
-        Wheel(PWM_PIN_3),
-        Wheel(PWM_PIN_4),
-        Wheel(PWM_PIN_5)}{}
-#endif//ENABLE_ENCODER
-#endif//DISABLE_CAN
 
 #if ENABLE_ENCODER
 // IF using teensy as main system then use this function
@@ -192,29 +163,6 @@ void DriveBase::drive(float left_axis, float right_axis)
         updateSingleWheelSpeed(5, right_axis);   
     }
 }
-
-#if ENABLE_CAN
-// Retrieves the target velocity from the CAN bus
-void DriveBase::getTargetSpeed()
-{
-
-    // if(m_can->newMessage(CAN::Message_ID::TARGET_VELOCITY))
-    // {
-    //     CAN_message_t msg = m_can->getMessage(CAN::Message_ID::TARGET_VELOCITY);
-    //     for (int i = 0; i < NUM_WHEELS; i++) 
-    //     {
-    //         if((msg.buf[6]&(1<<i)) != 0)//if bit is on
-    //         {
-    //             targetVelocity[i] = (float)msg.buf[i] * -1; // This line will change based on message packing
-    //         }
-    //         else
-    //         {
-    //             targetVelocity[i] = (float)msg.buf[i] * 1; // This line will change based on message packing
-    //         }
-    //     }
-    // }
-}
-#endif // DISABLE_CAN
 
 void DriveBase::updateSingleWheelSpeed(int wheelIndex, float targetSpeed)
 {

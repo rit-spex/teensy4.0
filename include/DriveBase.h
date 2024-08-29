@@ -12,12 +12,11 @@ the target velocity transmitted over CAN.
 #ifndef DRIVE_BASE_H
 #define DRIVE_BASE_H
 #include <Arduino.h>
-
 #include "Constants.h"
 #include "DEBUG.h"
+#include "Pinout.h"
 
 #include "Wheel.h"
-#include "Pinout.h"
 
 #ifdef ENABLE_CAN
 #include "CAN.h"
@@ -43,6 +42,7 @@ class DriveBase {
         // An array of the rover's wheels
         Wheel m_wheels[NUM_WHEELS];
 
+        // CAN object for the rover
         #if ENABLE_CAN
         CAN *m_CAN;
         #endif
@@ -52,14 +52,9 @@ class DriveBase {
         // An array of the target RPMs corresponding to each wheel
         float m_targetRPM[NUM_WHEELS];
 
-        #ifdef ENABLE_CAN
+        #if ENABLE_CAN
         void getTargetRPM();
         #endif
-
-        #else//ENABLE_ENCODER
-
-        // An array of the target velocities corresponding to each wheel
-        void getTargetSpeed();
-        #endif //ENABLE_ENCODER
+        #endif
 };
 #endif

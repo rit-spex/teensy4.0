@@ -49,6 +49,10 @@ enum FAN_PINS {
 
 #define STATUS_LIGHT_PIN 13
 
+// define the I2C pins for the arm
+#define ARM_SDA_PIN 18
+#define ARM_SCL_PIN 19
+
 // define these pins, wristDir and shoulderDir can be any digital output
 // wristSpeed and shoulderSpeed need to be pins 9 and 6
 #define WRIST_DIR_PIN 33

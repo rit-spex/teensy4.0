@@ -18,6 +18,7 @@ void MainBodyBoard::startUp()
 
 void MainBodyBoard::BlinkStatusLight()
 {
+    // blink the status light every STATUS_LIGHT_FREQUENCY_MS
     if(m_statusLightWait <= 0)
     {
         if(m_statusLightOn)
@@ -39,10 +40,7 @@ void MainBodyBoard::BlinkStatusLight()
 }
 
 void MainBodyBoard::updateSubsystems(int timeInterval_ms)
-{
-    //why is this here?
-    //digitalWrite(STATUS_LIGHT_PIN, HIGH);
-    
+{   
     BlinkStatusLight();
     
     // uint8_t locationA[8] = {35,122,96,00,64,66,15,00};

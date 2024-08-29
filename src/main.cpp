@@ -49,7 +49,6 @@ void setup()
   #if MASTER_TEENSY
   //this is the connection to the xbee
   #if ENABLE_XBEE
-  //xbee = Xbee();  
   Serial2.begin(9600, SERIAL_8N1);  
   #endif
 
@@ -60,8 +59,8 @@ void setup()
 
   // start everything that is needed for arm
   Wire.begin();
-  Wire.setSCL(19);
-  Wire.setSDA(18);
+  Wire.setSCL(ARM_SDA_PIN);
+  Wire.setSDA(ARM_SCL_PIN);
 
   // this needs to be moved to the arm class
   delay(100);
@@ -82,9 +81,6 @@ void setup()
   // time to allow the arm to send its commands
   delay(5000);
   #endif
-
-  // need to change this
-  digitalWrite(STATUS_LIGHT_PIN, LOW);
 }
 
 unsigned long lastTime = millis();
