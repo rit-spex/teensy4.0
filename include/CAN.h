@@ -1,14 +1,26 @@
 #ifndef CAN_H
 #define CAN_H
+
+#include "DEBUG.h"
+#include "Pinout.h"
+
+#if ENABLE_SIMULATOR
+#include "../TestSystem/Simulator.h"
+#else
+// only enable if not using simulator
 #include <FlexCAN_T4.h>
+#include <Arduino.h>
+#endif
+
 #include <unordered_map>
+#include <stdint.h>
 
 class CAN
 {
     public: 
         typedef enum {
-            E_STOP = (uint32_t) 0,
-            TARGET_VELOCITY = (uint32_t) 1,
+            E_STOP           = (uint32_t) 0,
+            TARGET_VELOCITY  = (uint32_t) 1,
             CURRENT_VELOCITY = (uint32_t) 2,
             
         } Message_ID;
@@ -17,10 +29,10 @@ class CAN
         typedef std::unordered_map<Message_ID, bool> MessageFlag;
 
         enum CAN_MB{
-            JETSON = FLEXCAN_MAILBOX::MB0, 
-            MAIN_BODY = FLEXCAN_MAILBOX::MB1, 
+            JETSON        = FLEXCAN_MAILBOX::MB0, 
+            MAIN_BODY     = FLEXCAN_MAILBOX::MB1, 
             SCIENCE_BOARD = FLEXCAN_MAILBOX::MB2,
-            ARM_BOARD = FLEXCAN_MAILBOX::MB3
+            ARM_BOARD     = FLEXCAN_MAILBOX::MB3
             };
 
         CAN();
@@ -34,7 +46,11 @@ class CAN
         static bool IsEStop(const CAN_message_t &msg);
         void TEST();
     private:
+        #if ENABLE_SIMULATOR
+        FlexCAN_T4 m_CAN;
+        #else
         FlexCAN_T4<CAN3, RX_SIZE_256, TX_SIZE_16> m_CAN;
+        #endif
         static ObjectDictionary m_objectDict;
         static MessageFlag m_messageFlag;
         static void CANSniff(const CAN_message_t &msg);

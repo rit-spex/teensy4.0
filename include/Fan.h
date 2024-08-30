@@ -2,8 +2,13 @@
 #define FAN_H
 
 #include "Pinout.h"
-#include <Arduino.h>
+#include "DEBUG.h"
 
+#if ENABLE_SIMULATOR
+#include "../TestSystem/Simulator.h"
+#else
+#include <Arduino.h>
+#endif
 class Fan
 {
     public:

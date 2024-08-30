@@ -13,10 +13,16 @@ The main body board is responsible for:
 #ifndef MAIN_BODY_BOARD_H
 #define MAIN_BODY_BOARD_H
 
-#include <Arduino.h>
 #include "Constants.h"
 #include "DEBUG.h"
 #include "Pinout.h"
+#include <math.h>
+
+#if ENABLE_SIMULATOR
+#include "../TestSystem/Simulator.h"
+#else
+#include <Arduino.h>
+#endif
 
 // All of the subsystems
 #if ENABLE_DRIVEBASE
@@ -45,7 +51,7 @@ class MainBodyBoard {
 
         // increments a time then will blink the status light
         void BlinkStatusLight();
-        
+
         // updates all of the subsystems
         void updateSubsystems(int timeInterval_ms);
 

@@ -11,10 +11,11 @@ the target velocity transmitted over CAN.
 
 #ifndef DRIVE_BASE_H
 #define DRIVE_BASE_H
-#include <Arduino.h>
+
 #include "Constants.h"
 #include "DEBUG.h"
 #include "Pinout.h"
+#include <math.h>
 
 #include "Wheel.h"
 

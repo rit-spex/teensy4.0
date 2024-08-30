@@ -1,6 +1,4 @@
 #include "../include/CAN.h"
-#include <Arduino.h>
-#include "Pinout.h"
 
 CAN::CAN(CAN_MB mailBox)
 {

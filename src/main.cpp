@@ -1,6 +1,13 @@
-#include <Arduino.h>
-
 #include "../include/Constants.h"
+#include "../include/DEBUG.h"
+#include "../include/Pinout.h"
+
+// the simulator will emulate the hardware
+#if ENABLE_SIMULATOR
+#include "../TestSystem/Simulator.h"
+#else
+#include <Arduino.h>
+#endif
 
 // The drivebase is the main body board
 #include "../include/MainBodyBoard.h"
@@ -20,6 +27,8 @@
 #endif
 #endif
 
+unsigned long currentRunCycle = 0;
+
 // create the main body board
 MainBodyBoard mbb;
 
@@ -35,7 +44,7 @@ Arm arm;
 #endif
 #endif
 
-void setup() 
+void setup()
 {
   // start up the main body board, this will turn the status light off
   mbb.startUp();
@@ -49,10 +58,10 @@ void setup()
   #if MASTER_TEENSY
   //this is the connection to the xbee
   #if ENABLE_XBEE
-  Serial2.begin(9600, SERIAL_8N1);  
+  Serial2.begin(9600, SERIAL_8N1);
   #endif
 
-  delay(5000);
+  delay(500);
 
   #if ENABLE_ARM
   arm.startUp();
@@ -79,27 +88,34 @@ void setup()
   #endif
 
   // time to allow the arm to send its commands
-  delay(5000);
+  delay(500);
   #endif
+
+  //update the currentRunCycle to be synced with the current time
+  currentRunCycle = floor(millis()/UPDATE_RATE_MS);
 }
 
-unsigned long lastTime = millis();
-
-void loop() 
-{ 
-  if(millis() - UPDATE_RATE_MS > lastTime)
+void loop()
+{
+  if(millis() >= UPDATE_RATE_MS * currentRunCycle)
   {
+    #if ENABLE_SERIAL
+      Serial.print("current cycle: ");
+      Serial.println((int)currentRunCycle);
+    #endif // ENABLE_SERIAL
+
     #if MASTER_TEENSY
     #if ENABLE_XBEE
     xbee.UpdateValues();
     if(xbee.isNewValues() && xbee.isActive())
-    { 
+    {
+      xbee.printValues();
       #if ENABLE_ARM
       //move the claw, make sure that both buttons are not pressed
       if(xbee.getCurrentValue(Xbee::CONTROLLER::A_BUTTON) && !xbee.getCurrentValue(Xbee::CONTROLLER::B_BUTTON))
       {
         arm.moveClaw(Arm::Direction::FORWARD);
-      } 
+      }
       else if(xbee.getCurrentValue(Xbee::CONTROLLER::B_BUTTON) && !xbee.getCurrentValue(Xbee::CONTROLLER::A_BUTTON))
       {
         arm.moveClaw(Arm::Direction::REVERSE);
@@ -113,7 +129,7 @@ void loop()
       if(xbee.getCurrentValue(Xbee::CONTROLLER::X_BUTTON) && !xbee.getCurrentValue(Xbee::CONTROLLER::Y_BUTTON))
       {
         arm.moveWrist(Arm::Direction::FORWARD);
-      } 
+      }
       else if(xbee.getCurrentValue(Xbee::CONTROLLER::Y_BUTTON) && !xbee.getCurrentValue(Xbee::CONTROLLER::X_BUTTON))
       {
         arm.moveWrist(Arm::Direction::REVERSE);
@@ -127,7 +143,7 @@ void loop()
       if(xbee.getCurrentValue(Xbee::CONTROLLER::LB_BUTTON) && !xbee.getCurrentValue(Xbee::CONTROLLER::RB_BUTTON))
       {
         arm.moveShoulder(Arm::Direction::FORWARD);
-      } 
+      }
       else if(xbee.getCurrentValue(Xbee::CONTROLLER::RB_BUTTON) && !xbee.getCurrentValue(Xbee::CONTROLLER::LB_BUTTON))
       {
         arm.moveShoulder(Arm::Direction::REVERSE);
@@ -141,7 +157,7 @@ void loop()
       if(xbee.getCurrentValue(Xbee::CONTROLLER::LEFT_TRIGGER) && !xbee.getCurrentValue(Xbee::CONTROLLER::RIGHT_TRIGGER))
       {
         arm.moveBase(Arm::Direction::FORWARD);
-      } 
+      }
       else if(xbee.getCurrentValue(Xbee::CONTROLLER::RIGHT_TRIGGER) && !xbee.getCurrentValue(Xbee::CONTROLLER::LEFT_TRIGGER))
       {
         arm.moveBase(Arm::Direction::REVERSE);
@@ -152,15 +168,17 @@ void loop()
       }
       #endif
     }
-    
+
 
     #if ENABLE_DRIVEBASE
-    mbb.drive(-xbee.getCurrentValue(Xbee::CONTROLLER::LEFT_Y_AXIS), xbee.getCurrentValue(Xbee::CONTROLLER::RIGHT_Y_AXIS));
+    mbb.drive(xbee.getCurrentValue(Xbee::CONTROLLER::LEFT_Y_AXIS), xbee.getCurrentValue(Xbee::CONTROLLER::RIGHT_Y_AXIS));
     #endif
 
     #endif
     #endif
-    mbb.updateSubsystems(millis() - lastTime);
-    lastTime = millis();
+    mbb.updateSubsystems(millis() - UPDATE_RATE_MS * currentRunCycle);
+
+    // the increment to the next cycle
+    currentRunCycle++;
   }
 }

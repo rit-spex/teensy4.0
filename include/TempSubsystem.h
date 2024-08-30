@@ -11,22 +11,16 @@ This class is responsible for reading the temperature of the thermistors.
 #ifndef TEMP_SUBSYSTEM_H
 #define TEMP_SUBSYSTEM_H
 
-#define NUM_THERMISTORS 4
-#define NUM_FANS 4
-
-// this is in celsius
-#define MAX_TEMP 44 //110 ferinheight
-#define MIN_TEMP 15 // 60 ferinheight
-
-//this is duty cycle pwm Signal
-#define MAX_FAN_SPEED 255
-#define MIN_FAN_SPEED 51
+#include "Constants.h"
+#include "Pinout.h"
+#include "DEBUG.h"
 
 #include "Fan.h"
 #include "Thermistor.h"
-#include "Pinout.h"
+
+#if ENABLE_CAN
 #include "CAN.h"
-#include "DEBUG.h"
+#endif
 
 using namespace std;
 

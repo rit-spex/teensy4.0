@@ -1,5 +1,4 @@
 #include "../include/Xbee.h"
-#include <Arduino.h>
 #include <algorithm>
 
 // unicast mode
@@ -69,10 +68,10 @@ void Xbee::UpdateValues()
 
         //reset disable counter
         numNoSignal = 0;
-        
+
         //parse the current message
         parseMessage();
-        
+
         //update the current median axis values
         for (int i = 0; i < NUM_AXES; i++)
         {
@@ -93,7 +92,7 @@ void Xbee::UpdateValues()
                 currentValues[i+NUM_AXES] = newValue;
                 isNewValuesFound = true;
             }
-            
+
         }
 
     }
@@ -118,9 +117,9 @@ void Xbee::UpdateValues()
                 }
             }
             isDisabled = true;
-            digitalWrite(STATUS_LIGHT_PIN, HIGH);
+            //digitalWrite(STATUS_LIGHT_PIN, HIGH);
         }
-    
+
     }
 }
 

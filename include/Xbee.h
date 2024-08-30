@@ -1,8 +1,15 @@
 #ifndef XBEE_H
 #define XBEE_H
 
-#include <map>
+#include "DEBUG.h"
 #include "Pinout.h"
+#include <map>
+
+#if ENABLE_SIMULATOR
+#include "../TestSystem/Simulator.h"
+#else
+#include <Arduino.h>
+#endif
 
 #define SAVE_SIZE 3
 #define START_COMMAND 0xde

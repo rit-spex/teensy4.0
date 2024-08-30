@@ -2,9 +2,15 @@
 #define QUADDECODER_H
 
 #include "Pinout.h"
+#include "Constants.h"
+#include "DEBUG.h"
+
+#if ENABLE_SIMULATOR
+#include "../TestSystem/Simulator.h"
+#else
 #include <Encoder.h>
 #include <IntervalTimer.h>
-#include "Constants.h"
+#endif
 
 class QuadratureDecoder {
 public:

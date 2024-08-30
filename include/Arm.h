@@ -1,11 +1,18 @@
 #ifndef ARM_H
 #define ARM_H
+
+#include "DEBUG.h"
+#include "Pinout.h"
+#include "Constants.h"
+
+#if ENABLE_SIMULATOR
+#include "../TestSystem/Simulator.h"
+#else
 #include <Arduino.h>
 #include <TimerThree.h>
 #include <Wire.h>
 #include <Tic.h>
-#include "Pinout.h"
-#include "Constants.h"
+#endif
 
 class Arm
 {

@@ -7,13 +7,15 @@ MainBodyBoard::MainBodyBoard()
 
 MainBodyBoard::~MainBodyBoard()
 {
-    
+
 }
 
 void MainBodyBoard::startUp()
 {
     // set the status light to off
     digitalWrite(STATUS_LIGHT_PIN, HIGH);
+    m_statusLightWait = floor(STATUS_LIGHT_FREQUENCY_MS/UPDATE_RATE_MS);
+    m_statusLightOn = true;
 }
 
 void MainBodyBoard::BlinkStatusLight()
@@ -40,9 +42,9 @@ void MainBodyBoard::BlinkStatusLight()
 }
 
 void MainBodyBoard::updateSubsystems(int timeInterval_ms)
-{   
+{
     BlinkStatusLight();
-    
+
     // uint8_t locationA[8] = {35,122,96,00,64,66,15,00};
     // uint8_t locationB[8] = {35,122,96,00,00,00,00,00};
     // uint8_t data[8] = {0,0,0,0,0,0,0,0};
@@ -75,9 +77,9 @@ void MainBodyBoard::updateSubsystems(int timeInterval_ms)
 #if MASTER_TEENSY
 void MainBodyBoard::drive(float left_axis, float right_axis)
 {
-    
+
     m_drive_base.drive(left_axis, right_axis);
-    
+
 }
 #endif
 #endif

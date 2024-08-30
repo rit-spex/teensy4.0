@@ -5,22 +5,20 @@ Date Created: 1/23/2024
 
 This file defines the wheel class for the rover.
 
-This class is responsible for controlling each individual wheel of the rover 
+This class is responsible for controlling each individual wheel of the rover
 based on its target speed.
 */
 
 #ifndef WHEEL_H
 #define WHEEL_H
 
-#include <Arduino.h>
+#include "Pinout.h"
+#include "Constants.h"
+#include "DEBUG.h"
 
 #include "Motor.h"
 #include "QuadDecoder.h"
 #include "PIDController.h"
-
-#include "Pinout.h"
-#include "Constants.h"
-#include "DEBUG.h"
 
 class Wheel {
     public:
@@ -31,21 +29,21 @@ class Wheel {
         * @param enc_A_pin The A pin of the wheel's quadrature encoder
         * @param enc_B_pin The B pin of the wheel's quadrature encoder
         */
-        Wheel(PWM_PINS pwm_pin, ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin, double kp, double ki, double kd);
+        Wheel(PWM_PINS pwm_pin, int direction, ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin, double kp, double ki, double kd);
         #else
         /*
         * Constructor for the wheel class if there is no encoder
         */
-        Wheel(PWM_PINS pwm_pin);
+        Wheel(PWM_PINS pwm_pin, int direction);
         #endif
-        
+
         /*
         * Adjust's the PWM signal to the wheel to match the target speed
         * @param targetSpeed The target speed of the wheel
         */
         void setSpeed(float targetSpeed);
 
-        
+
         #if ENABLE_ENCODER
         void setRPM(float targetRPM);
 
@@ -60,9 +58,9 @@ class Wheel {
         */
         void updatePID(int timeInterval_ms);
         #endif
-    
+
     private:
-        
+
         Motor m_motor;
 
         #if ENABLE_ENCODER
