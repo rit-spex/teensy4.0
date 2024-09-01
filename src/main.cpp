@@ -22,7 +22,10 @@
 
 // includes for the arm
 #if ENABLE_ARM
+#if ENABLE_SIMULATOR
+#else
 #include <Wire.h>
+#endif // ENABLE_SIMULATOR
 #include "../include/Arm.h"
 #endif
 #endif
@@ -176,7 +179,8 @@ void loop()
 
     #endif
     #endif
-    mbb.updateSubsystems(millis() - UPDATE_RATE_MS * currentRunCycle);
+    // subtract the current cycle by one to get the entire timeframe
+    mbb.updateSubsystems(millis() - UPDATE_RATE_MS * (currentRunCycle-1));
 
     // the increment to the next cycle
     currentRunCycle++;

@@ -17,7 +17,6 @@ Motor::~Motor()
 //write to the motor
 void Motor::setSpeed(float percent)
 {
-    Serial.println(percent);
     //First check if the target speed is within the bounds of -1 to 1
     if(percent < -PERCENT_MAX)
     {
@@ -32,6 +31,53 @@ void Motor::setSpeed(float percent)
         percent = percent;
     }
 
+    if(m_speed > 0)
+    {
+        if(RAMP_UP_RATE_PERCENT < (percent - m_speed))
+        {
+            m_speed = m_speed + RAMP_UP_RATE_PERCENT;
+        }
+        else if(RAMP_DOWN_RATE_PERCENT < (m_speed - percent))
+        {
+            m_speed = m_speed - RAMP_DOWN_RATE_PERCENT;
+        }
+        else
+        {
+            m_speed = percent;
+        }
+    }
+    else if(m_speed < 0)
+    {
+        if(RAMP_UP_RATE_PERCENT < (percent - m_speed))
+        {
+            m_speed = m_speed + RAMP_DOWN_RATE_PERCENT;
+        }
+        else if(RAMP_DOWN_RATE_PERCENT < (m_speed - percent))
+        {
+            m_speed = m_speed - RAMP_UP_RATE_PERCENT;
+        }
+        else
+        {
+            m_speed = percent;
+        }
+    }
+    else
+    {
+        if(RAMP_UP_RATE_PERCENT < percent)
+        {
+            m_speed = m_speed + RAMP_UP_RATE_PERCENT;
+        }
+        else if(RAMP_UP_RATE_PERCENT < -percent)
+        {
+            m_speed = m_speed - RAMP_UP_RATE_PERCENT;
+        }
+        else
+        {
+            m_speed = percent;
+        }
+    }
+
+    /*
     // if the projected speed is greater than current speed ramp use ramp up
     if(RAMP_UP_RATE_PERCENT < fabs(percent) - fabs(m_speed))
     {
@@ -60,7 +106,7 @@ void Motor::setSpeed(float percent)
     {
         m_speed = percent;
     }
-
+    */
 
 
     // If the target speed is negative, set the PWM duty cycle to the reverse range from 1500(0%) to 1000(-100%)

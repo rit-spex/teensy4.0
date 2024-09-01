@@ -171,6 +171,7 @@ Encoder::Encoder(int pin1, int pin2)
 {
     this->pin1 = pin1;
     this->pin2 = pin2;
+    this->counts = 1000;
     std::cout << "Encoder constructor called" << std::endl;
 }
 void Encoder::attach(int pin1, int pin2)
@@ -181,12 +182,12 @@ void Encoder::attach(int pin1, int pin2)
 }
 long Encoder::read()
 {
-    std::cout << "Encoder read called on encoder with pins: "<< pin1 << pin2 << std::endl;
-    return 0;
+    //std::cout << "Encoder read called on encoder with pins: "<< pin1 << ", " << pin2 << std::endl;
+    return this->counts;
 }
 void Encoder::write(int value)
 {
-    std::cout << "Encoder write called with value: " << value << std::endl;
+    //std::cout << "Encoder write called with value: " << value << std::endl;
 }
 
 ////////////////////////////////////////////// FlexCAN_T4 ////////////////////////////////

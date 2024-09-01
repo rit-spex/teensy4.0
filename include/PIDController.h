@@ -10,7 +10,7 @@ public:
     PIDController(double kp, double ki, double kd);
 
     // Update method
-    double update(double targeted_velocity, double current_velocity);
+    double update(double targeted_RPM, double current_RPM);
 
 private:
     double kp;

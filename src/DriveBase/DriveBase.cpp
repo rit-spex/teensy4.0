@@ -67,16 +67,16 @@ void DriveBase::drive(float left_axis, float right_axis)
         m_targetRPM[0] = left_axis * MAX_RPM;
         m_targetRPM[1] = left_axis * MAX_RPM;
         m_targetRPM[2] = left_axis * MAX_RPM;
-        m_targetRPM[3] = -(left_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
-        m_targetRPM[4] = -(left_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
-        m_targetRPM[5] = -(left_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
+        m_targetRPM[3] = (left_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
+        m_targetRPM[4] = (left_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
+        m_targetRPM[5] = (left_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
     }
     else if (fabs(left_axis)<fabs(right_axis))
     {
         int isNegative = right_axis/fabs(right_axis);
-        m_targetRPM[0] = -(right_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
-        m_targetRPM[1] = -(right_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
-        m_targetRPM[2] = -(right_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
+        m_targetRPM[0] = (right_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
+        m_targetRPM[1] = (right_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
+        m_targetRPM[2] = (right_axis - MAX_DIFFERENCE_PERCENT/PERCENT_MAX * isNegative) * MAX_RPM;
         m_targetRPM[3] = right_axis * MAX_RPM;
         m_targetRPM[4] = right_axis * MAX_RPM;
         m_targetRPM[5] = right_axis * MAX_RPM;
@@ -86,10 +86,9 @@ void DriveBase::drive(float left_axis, float right_axis)
 // Updates the velocity of the wheels to match the target velocity. This will also update PID
 void DriveBase::updateRPM(int timeInterval_ms)
 {
-    #ifdef ENABLE_CAN
+    #if ENABLE_CAN
     getTargetRPM();
     #endif
-
     for (int i = 0; i < NUM_WHEELS; i++)
     {
         m_wheels[i].setRPM(m_targetRPM[i]);
@@ -99,6 +98,7 @@ void DriveBase::updateRPM(int timeInterval_ms)
     {
         m_wheels[i].updatePID(timeInterval_ms);
     }
+
 }
 
 #if ENABLE_CAN

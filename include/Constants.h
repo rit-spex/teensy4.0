@@ -30,8 +30,8 @@
 #define RIGHTDIRECTION 1 //positive 1 or negitive -1
 
 // the time it takes to go from 0 to 100
-#define RAMP_UP_TIME   1000 //milliseconds
-#define RAMP_DOWN_TIME 500  //milliseconds
+#define RAMP_UP_TIME   200 //milliseconds
+#define RAMP_DOWN_TIME 80  //milliseconds
 
 // The percent Increase or Decrease per cycle
 #define RAMP_UP_RATE_PERCENT   ((1.00)/(RAMP_UP_TIME/UPDATE_RATE_MS))
@@ -56,26 +56,26 @@
 #define MIN_FAN_SPEED 51
 
 namespace PIDConstants {
-    constexpr double KP0 = 1.0;
-    constexpr double KP1 = 1.0;
-    constexpr double KP2 = 1.0;
-    constexpr double KP3 = 1.0;
-    constexpr double KP4 = 1.0;
-    constexpr double KP5 = 1.0;
+    constexpr double KP0 = 0.001;
+    constexpr double KP1 = 0.001;
+    constexpr double KP2 = 0.001;
+    constexpr double KP3 = 0.001;
+    constexpr double KP4 = 0.001;
+    constexpr double KP5 = 0.001;
 
-    constexpr double KI0 = 0.1;
-    constexpr double KI1 = 0.1;
-    constexpr double KI2 = 0.1;
-    constexpr double KI3 = 0.1;
-    constexpr double KI4 = 0.1;
-    constexpr double KI5 = 0.1;
+    constexpr double KI0 = 0.0;
+    constexpr double KI1 = 0.0;
+    constexpr double KI2 = 0.0;
+    constexpr double KI3 = 0.0;
+    constexpr double KI4 = 0.0;
+    constexpr double KI5 = 0.0;
 
-    constexpr double KD0 = 0.01;
-    constexpr double KD1 = 0.01;
-    constexpr double KD2 = 0.01;
-    constexpr double KD3 = 0.01;
-    constexpr double KD4 = 0.01;
-    constexpr double KD5 = 0.01;
+    constexpr double KD0 = 0.00;
+    constexpr double KD1 = 0.00;
+    constexpr double KD2 = 0.00;
+    constexpr double KD3 = 0.00;
+    constexpr double KD4 = 0.00;
+    constexpr double KD5 = 0.00;
 };
 
 #endif // CONSTANTS_H

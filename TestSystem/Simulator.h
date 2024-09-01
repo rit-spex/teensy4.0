@@ -85,6 +85,7 @@ class Encoder
     private:
         int pin1;
         int pin2;
+        int counts;
     public:
         Encoder(int pin1, int pin2);
         void attach(int pin1, int pin2);
