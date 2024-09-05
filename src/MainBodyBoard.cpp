@@ -43,7 +43,10 @@ void MainBodyBoard::BlinkStatusLight()
 
 void MainBodyBoard::updateSubsystems(int timeInterval_ms)
 {
-    BlinkStatusLight();
+    if(!m_disabled)
+    {
+        BlinkStatusLight();
+    }
 
     // uint8_t locationA[8] = {35,122,96,00,64,66,15,00};
     // uint8_t locationB[8] = {35,122,96,00,00,00,00,00};
@@ -83,3 +86,9 @@ void MainBodyBoard::drive(float left_axis, float right_axis)
 }
 #endif
 #endif
+
+void MainBodyBoard::disable()
+{
+    m_disabled = true;
+    digitalWrite(STATUS_LIGHT_PIN, HIGH);
+}

@@ -3,6 +3,7 @@
 
 #include "DEBUG.h"
 #include "Pinout.h"
+#include "Constants.h"
 #include <map>
 
 #if ENABLE_SIMULATOR
@@ -11,7 +12,7 @@
 #include <Arduino.h>
 #endif
 
-#define SAVE_SIZE 3
+#define SAVE_SIZE 1
 #define START_COMMAND 0xde
 
 #define NUM_AXES 2
@@ -52,13 +53,14 @@ private:
     bool buttonvalues[NUM_BUTTONS][SAVE_SIZE];
     float axisvalues[NUM_AXES][SAVE_SIZE];
 
-    // flag if new values are found
-    bool isNewValuesFound = false;
-
     // the current values
     float currentValues[NUM_BUTTONS + NUM_AXES];
 
 public:
+
+    // flag if new values are found
+    bool isNewValuesFound = false;
+
     long long error_count = 0;
     long long good_count = 0;
 

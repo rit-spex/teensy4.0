@@ -55,6 +55,9 @@ class MainBodyBoard {
         // updates all of the subsystems
         void updateSubsystems(int timeInterval_ms);
 
+        // disables the teensy
+        void disable();
+
         // Drives the rover based on the left and right joystick values - ONLY FOR MASTER_TEENSY
         #if ENABLE_DRIVEBASE
         #if MASTER_TEENSY
@@ -65,6 +68,7 @@ class MainBodyBoard {
 
         bool m_statusLightOn = false;
         int  m_statusLightWait = 0;
+        bool m_disabled = false;
 
         #if ENABLE_CAN
             CAN m_can = CAN( CAN::CAN_MB::MAIN_BODY );

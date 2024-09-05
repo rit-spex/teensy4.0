@@ -136,7 +136,7 @@ void Xbee::parseMessage()
         else
         {
             //good_count++;
-            float value = (input - 100.0)/100.0;
+            float value = ((input - 100.0)/100.0) * PERCENT_MAX;
             this->axisvalues[i][currentHead] = value;
         }
     }

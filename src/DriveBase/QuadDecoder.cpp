@@ -52,7 +52,7 @@ float QuadratureDecoder::getRPM(int time_interval_ms)
   // calculate the RPM
   //RPM = rotations/min = (count/counts_per_rotation)/(time_interval_ms/(seconds_per_minute * milliseconds_per_second))
   float rotation = (getAverageCount())/((float)COUNTS_PER_REV);
-  float timeMin  = ((getAverageTime())/(60.0 * 1000.0));
+  float timeMin  = ((getAverageTime())/(MS_IN_MIN));
   float rpm = (rotation)/(timeMin);// /(time_interval_ms/(60 * 1000)));
   return rpm;
 }
@@ -62,14 +62,9 @@ float QuadratureDecoder::getAverageTime()
     float total = 0;
     for(int i =0; i<ENCODER_SAVE_SIZE; i++)
     {
-    float total = 0;
-    for(int i =0; i<ENCODER_SAVE_SIZE; i++)
-    {
         total+= this->m_timeInterval[i];
     }
     return total/(float)ENCODER_SAVE_SIZE;
-}
-    return total/ENCODER_SAVE_SIZE;
 }
 
 float QuadratureDecoder::getAverageCount()

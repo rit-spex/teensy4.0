@@ -64,7 +64,7 @@ void setup()
   Serial2.begin(9600, SERIAL_8N1);
   #endif
 
-  delay(500);
+  delay(5000);
 
   #if ENABLE_ARM
   arm.startUp();
@@ -75,11 +75,11 @@ void setup()
   Wire.setSDA(ARM_SCL_PIN);
 
   // this needs to be moved to the arm class
-  delay(100);
+  delay(5000);
   Wire.beginTransmission(BASE_I2C_ID);
   Wire.write(0x83);  // Exit safe start
   Wire.endTransmission();
-  delay(20);
+  delay(5000);
 
   // Initialize the Tic object
   arm.tic.exitSafeStart();
@@ -172,6 +172,10 @@ void loop()
       #endif
     }
 
+    if(xbee.isActive() && !xbee.isNewValuesFound)
+    {
+      mbb.disable();
+    }
 
     #if ENABLE_DRIVEBASE
     mbb.drive(xbee.getCurrentValue(Xbee::CONTROLLER::LEFT_Y_AXIS), xbee.getCurrentValue(Xbee::CONTROLLER::RIGHT_Y_AXIS));

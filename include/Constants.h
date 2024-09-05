@@ -8,7 +8,7 @@
 #define UPDATE_RATE_MS 40
 
 //The max speed of the motors
-#define PERCENT_MAX 1.00
+#define PERCENT_MAX 0.45
 
 // Max RPM of the motors
 #define MAX_RPM 5000
@@ -25,13 +25,16 @@
 #define NUM_WHEELS 6
 #define COUNTS_PER_REV 2048
 
+//milliseconds in a minute
+#define MS_IN_MIN 60000.0
+
 // The Direction of the motor
-#define LEFTDIRECTION  1 //positive 1 or negitive -1
+#define LEFTDIRECTION  -1 //positive 1 or negitive -1
 #define RIGHTDIRECTION 1 //positive 1 or negitive -1
 
 // the time it takes to go from 0 to 100
-#define RAMP_UP_TIME   200 //milliseconds
-#define RAMP_DOWN_TIME 80  //milliseconds
+#define RAMP_UP_TIME   1000 //milliseconds
+#define RAMP_DOWN_TIME 500  //milliseconds
 
 // The percent Increase or Decrease per cycle
 #define RAMP_UP_RATE_PERCENT   ((1.00)/(RAMP_UP_TIME/UPDATE_RATE_MS))
