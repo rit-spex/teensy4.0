@@ -28,12 +28,13 @@ void Arm::startUp()
 
 void Arm::moveShoulder(Direction direction)
 {
-  #if ENABLE_SERIAL
-  Serial.println("Moving shoulder");
-  #endif
+
   // If direction is not OFF, move motor
   if(direction != OFF)
   {
+      #if ENABLE_SERIAL
+  Serial.println("Moving shoulder");
+  #endif
     // Write direction, HIGH is one way LOW is the other
     digitalWrite(SHOULDER_DIR_PIN, (int)direction);
     Timer3.pwm(SHOULDER_SPEED_PIN, 511);
@@ -47,12 +48,13 @@ void Arm::moveShoulder(Direction direction)
 
 void Arm::moveWrist(Direction direction)
 {
-  #if ENABLE_SERIAL
-  Serial.println("Moving wrist");
-  #endif
+
   // If direction is not OFF, move motor
   if(direction != OFF)
   {
+      #if ENABLE_SERIAL
+  Serial.println("Moving wrist");
+  #endif
     // Write direction, HIGH is one way LOW is the other
     digitalWrite(WRIST_DIR_PIN, (int)direction);
     Timer3.pwm(WRIST_SPEED_PIN, 511);
@@ -66,19 +68,22 @@ void Arm::moveWrist(Direction direction)
 
 void Arm::moveBase(Direction direction)
 {
-  #if ENABLE_SERIAL
-  Serial.println("Moving base");
-  #endif
-
   uint8_t cmd = 0x85;
   int speed = 0;
   if(direction == FORWARD)
   {
+    #if ENABLE_SERIAL
+    Serial.println("Moving base");
+    #endif
+
     cmd = 0x85;  // Motor forward
     speed = BASE_MAX_SPEED; // needs to be positive
   }
   else if(direction == REVERSE)
   {
+        #if ENABLE_SERIAL
+    Serial.println("Moving base");
+    #endif
     cmd = 0x86;  // Motor reverse
     speed = BASE_MAX_SPEED; // needs to be positive
   }
@@ -96,16 +101,19 @@ void Arm::moveBase(Direction direction)
 
 void Arm::moveClaw(Direction direction)
 {
-  #if ENABLE_SERIAL
-  Serial.println("Moving claw");
-  #endif
 
   if(direction == FORWARD)
   {
+      #if ENABLE_SERIAL
+  Serial.println("Moving claw");
+  #endif
     tic.setTargetVelocity(CLAW_MAX_SPEED);
   }
   else if(direction == REVERSE)
   {
+      #if ENABLE_SERIAL
+  Serial.println("Moving claw");
+  #endif
     tic.setTargetVelocity(-CLAW_MAX_SPEED);
   }
   else if(direction == OFF)

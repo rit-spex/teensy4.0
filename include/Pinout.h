@@ -11,21 +11,21 @@ enum PWM_PINS {
 };
 
 enum ENC_A_PINS {
-    ENC_A_PIN_0 = 8,
-    ENC_A_PIN_1 = 9,
-    ENC_A_PIN_2 = 10,
-    ENC_A_PIN_3 = 11,
-    ENC_A_PIN_4 = 12,
-    ENC_A_PIN_5 = 13
+    ENC_A_PIN_0 = 30,
+    ENC_A_PIN_1 = 9,//not valid
+    ENC_A_PIN_2 = 10,//not valid
+    ENC_A_PIN_3 = 11,//not valid
+    ENC_A_PIN_4 = 12,//not valid
+    ENC_A_PIN_5 = 13 //not valid
 };
 
 enum ENC_B_PINS {
-    ENC_B_PIN_0 = 14,
-    ENC_B_PIN_1 = 15,
-    ENC_B_PIN_2 = 16,
-    ENC_B_PIN_3 = 17,
-    ENC_B_PIN_4 = 18,
-    ENC_B_PIN_5 = 19
+    ENC_B_PIN_0 = 31,
+    ENC_B_PIN_1 = 15,//not valid
+    ENC_B_PIN_2 = 16,//not valid
+    ENC_B_PIN_3 = 17,//not valid
+    ENC_B_PIN_4 = 18,//not valid
+    ENC_B_PIN_5 = 19//not valid
 };
 
 enum CAN_PINS {

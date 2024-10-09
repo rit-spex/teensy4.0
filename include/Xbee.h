@@ -68,14 +68,14 @@ public:
     {
         LEFT_Y_AXIS   = 0, // left drive 
         RIGHT_Y_AXIS  = 1, //right drive
-        LEFT_TRIGGER  = 2, // j1 left
-        RIGHT_TRIGGER = 3, // j1 right
-        A_BUTTON      = 4, // grip open
-        B_BUTTON      = 5, // grip close
-        X_BUTTON      = 6, // j3 down
-        Y_BUTTON      = 7, // j3 up
-        LB_BUTTON     = 8, // j2 down
-        RB_BUTTON     = 9, // j2 up
+        A_BUTTON      = 2, // grip open
+        B_BUTTON      = 3, // grip close
+        X_BUTTON      = 4, // j3 down
+        Y_BUTTON      = 5, // j3 up
+        LB_BUTTON     = 6, // j2 down
+        RB_BUTTON     = 7, // j2 up
+        LEFT_TRIGGER  = 8, // j1 left
+        RIGHT_TRIGGER = 9, // j1 right
     };
 
     Xbee();
