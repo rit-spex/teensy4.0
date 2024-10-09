@@ -2,6 +2,10 @@
 #include "../include/DEBUG.h"
 #include "../include/Pinout.h"
 
+#if ENABLE_DEMO_ENCODER
+#include "../include/QuadDecoder.h"
+#endif
+
 // the simulator will emulate the hardware
 #if ENABLE_SIMULATOR
 #include "../TestSystem/Simulator.h"
@@ -64,7 +68,7 @@ void setup()
   Serial2.begin(9600, SERIAL_8N1);
   #endif
 
-  delay(5000);
+  delay(1000);
 
   #if ENABLE_ARM
   arm.startUp();
@@ -75,11 +79,11 @@ void setup()
   Wire.setSDA(ARM_SCL_PIN);
 
   // this needs to be moved to the arm class
-  delay(5000);
+  delay(1000);
   Wire.beginTransmission(BASE_I2C_ID);
   Wire.write(0x83);  // Exit safe start
   Wire.endTransmission();
-  delay(5000);
+  delay(1000);
 
   // Initialize the Tic object
   arm.tic.exitSafeStart();
@@ -91,7 +95,7 @@ void setup()
   #endif
 
   // time to allow the arm to send its commands
-  delay(500);
+  delay(1000);
   #endif
 
   //update the currentRunCycle to be synced with the current time
@@ -100,17 +104,25 @@ void setup()
 
 void loop()
 {
+  #if ENABLE_DEMO_ENCODER
+  QuadratureDecoder demo_encoder{ENC_A_PIN_0, ENC_B_PIN_0};
+  #endif
+  mbb.runBackgroundProcess();
   if(millis() >= UPDATE_RATE_MS * currentRunCycle)
   {
     #if ENABLE_SERIAL
       Serial.print("current cycle: ");
       Serial.println((int)currentRunCycle);
-    #endif // ENABLE_SERIAL
 
+      #if ENABLE_DEMO_ENCODER
+      Serial.println(demo_encoder.getRPM(millis() - UPDATE_RATE_MS * (currentRunCycle-1)));
+      #endif
+    #endif // ENABLE_SERIAL
+    
     #if MASTER_TEENSY
     #if ENABLE_XBEE
     xbee.UpdateValues();
-    if(xbee.isNewValues() && xbee.isActive())
+    if(xbee.isNewValues() && !xbee.isDisabled())
     {
       xbee.printValues();
       #if ENABLE_ARM
@@ -172,7 +184,7 @@ void loop()
       #endif
     }
 
-    if(xbee.isActive() && !xbee.isNewValuesFound)
+    if(xbee.isDisabled())
     {
       mbb.disable();
     }

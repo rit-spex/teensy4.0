@@ -26,15 +26,28 @@ class Xbee
 private:
 
     // the amount of cycles with no signal
-    int numNoSignal;
+    int m_numNoSignal;
 
     // a flag if the xbee is disabled
-    bool isDisabled = false;
+    bool m_isDisabled = false;
     
-    int lastSignalCount;
+    int m_lastSignalCount;
 
     // a flag that once triggered will start the xbee
-    bool firstConnected = false;
+    bool m_firstConnected = false;
+
+    // change what data in the buffer update next
+    int m_currentHead = 0;
+
+    // all of the current values
+    bool m_buttonvalues[NUM_BUTTONS][SAVE_SIZE];
+    float m_axisvalues[NUM_AXES][SAVE_SIZE];
+
+    // the current values
+    float m_currentValues[NUM_BUTTONS + NUM_AXES];
+
+    // flag if new values are found
+    bool m_isNewValuesFound = false;
 
     // parse messages from the xbee
     void parseMessage();
@@ -46,20 +59,7 @@ private:
     // convert an int to a binary array
     void intToBinary(int n, bool *bin);
 
-    // change what data in the buffer update next
-    int currentHead = 0;
-
-    // all of the current values
-    bool buttonvalues[NUM_BUTTONS][SAVE_SIZE];
-    float axisvalues[NUM_AXES][SAVE_SIZE];
-
-    // the current values
-    float currentValues[NUM_BUTTONS + NUM_AXES];
-
 public:
-
-    // flag if new values are found
-    bool isNewValuesFound = false;
 
     long long error_count = 0;
     long long good_count = 0;
@@ -82,7 +82,7 @@ public:
     void UpdateValues();
 
     float getCurrentValue(CONTROLLER controller);
-    bool isActive();
+    bool isDisabled();
     bool isNewValues();
     void printValues();
 };
