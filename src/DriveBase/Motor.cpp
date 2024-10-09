@@ -33,11 +33,11 @@ void Motor::setSpeed(float percent)
 
     if(m_speed > 0)
     {
-        if(RAMP_UP_RATE_PERCENT < (percent - m_speed))
+        if(percent > (m_speed + RAMP_UP_RATE_PERCENT))
         {
             m_speed = m_speed + RAMP_UP_RATE_PERCENT;
         }
-        else if(RAMP_DOWN_RATE_PERCENT < (m_speed - percent))
+        else if(percent < (m_speed - RAMP_DOWN_RATE_PERCENT))
         {
             m_speed = m_speed - RAMP_DOWN_RATE_PERCENT;
         }
@@ -48,13 +48,13 @@ void Motor::setSpeed(float percent)
     }
     else if(m_speed < 0)
     {
-        if(RAMP_UP_RATE_PERCENT < (percent - m_speed))
-        {
-            m_speed = m_speed + RAMP_DOWN_RATE_PERCENT;
-        }
-        else if(RAMP_DOWN_RATE_PERCENT < (m_speed - percent))
+        if(percent < (m_speed - RAMP_UP_RATE_PERCENT))
         {
             m_speed = m_speed - RAMP_UP_RATE_PERCENT;
+        }
+        else if(percent > (m_speed + RAMP_DOWN_RATE_PERCENT))
+        {
+            m_speed = m_speed + RAMP_DOWN_RATE_PERCENT;
         }
         else
         {
@@ -110,12 +110,12 @@ void Motor::setSpeed(float percent)
 
 
     // If the target speed is negative, set the PWM duty cycle to the reverse range from 1500(0%) to 1000(-100%)
-    if(percent < 0)
+    if(m_speed < 0)
     {
         m_motor.writeMicroseconds(NEUTRAL - floor((SPARK_MAX_MIN_SPEED - NEUTRAL) * m_speed * m_direction));
     }
     // If the target speed is positive, set the PWM duty cycle to the forward range from 1500(0%) to 2000(100%)
-    else if(percent > 0)
+    else if(m_speed > 0)
     {
         m_motor.writeMicroseconds(NEUTRAL + floor((SPARK_MAX_MAX_SPEED - NEUTRAL) * m_speed * m_direction));
     }
