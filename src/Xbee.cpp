@@ -19,7 +19,7 @@ Xbee::Xbee()
         // buttons default to false
         for(int j = 0; j<SAVE_SIZE; j++)
         {
-            buttonvalues[i][j] = false;
+            m_buttonvalues[i][j] = false;
         }
     }
     for (int i = 0; i < NUM_AXES; i++)
@@ -27,28 +27,28 @@ Xbee::Xbee()
         for (int j = 0; j < SAVE_SIZE; j++)
         {
             // axis values default to 0
-            axisvalues[i][j] = 0.0;
+            m_axisvalues[i][j] = 0.0;
         }
     }
-    numNoSignal = 0;
-    lastSignalCount = 0;
+    m_numNoSignal = 0;
+    m_lastSignalCount = 0;
 }
 
 void Xbee::UpdateValues()
 {
     // if the xbee is disabled, don't update the values
-    if(isDisabled)
+    if(m_isDisabled)
     {
         return;
     }
 
     // if the xbee has not connected yet, don't start the disable timer
-    if(!firstConnected)
+    if(!m_firstConnected)
     {
         // yay, the xbee is connected
         if(Serial2.available() >= 5)
         {
-            firstConnected = true;
+            m_firstConnected = true;
         }
         // no connection detected, don't update the values
         else
@@ -60,14 +60,13 @@ void Xbee::UpdateValues()
     //get the values from the xbee
     if(Serial2.available() >= 5)
     {
-        firstConnected = true;
         if(Serial2.read() != START_COMMAND)
         {
             return;
         }
 
         //reset disable counter
-        numNoSignal = 0;
+        m_numNoSignal = 0;
 
         //parse the current message
         parseMessage();
@@ -76,10 +75,10 @@ void Xbee::UpdateValues()
         for (int i = 0; i < NUM_AXES; i++)
         {
             float newValue = findAxisMedian(i);
-            if(currentValues[i] != newValue)
+            if(m_currentValues[i] != newValue)
             {
-                currentValues[i] = newValue;
-                isNewValuesFound = true;
+                m_currentValues[i] = newValue;
+                m_isNewValuesFound = true;
             }
         }
 
@@ -87,10 +86,10 @@ void Xbee::UpdateValues()
         for(int i = 0; i < NUM_BUTTONS; i++)
         {
             float newValue = findButtonMedian(i);
-            if(currentValues[i+NUM_AXES] != newValue)
+            if(m_currentValues[i+NUM_AXES] != newValue)
             {
-                currentValues[i+NUM_AXES] = newValue;
-                isNewValuesFound = true;
+                m_currentValues[i+NUM_AXES] = newValue;
+                m_isNewValuesFound = true;
             }
 
         }
@@ -98,26 +97,25 @@ void Xbee::UpdateValues()
     }
     else
     {
-        numNoSignal++;
-        if(numNoSignal > 100)
+        m_numNoSignal++;
+        if(m_numNoSignal > 100)
         {
             // empty out of the values
             for(int i = 0; i<NUM_BUTTONS; i++)
             {
                 for(int j = 0; j<SAVE_SIZE; j++)
                 {
-                    buttonvalues[i][j] = false;
+                    m_buttonvalues[i][j] = false;
                 }
             }
             for (int i = 0; i < NUM_AXES; i++)
             {
                 for (int j = 0; j < SAVE_SIZE; j++)
                 {
-                    axisvalues[i][j] = 0.0;
+                    m_axisvalues[i][j] = 0.0;
                 }
             }
-            isDisabled = true;
-            //digitalWrite(STATUS_LIGHT_PIN, HIGH);
+            m_isDisabled = true;
         }
 
     }
@@ -137,7 +135,7 @@ void Xbee::parseMessage()
         {
             //good_count++;
             float value = ((input - 100.0)/100.0) * PERCENT_MAX;
-            this->axisvalues[i][currentHead] = value;
+            this->m_axisvalues[i][m_currentHead] = value;
         }
     }
 
@@ -149,11 +147,11 @@ void Xbee::parseMessage()
     {
         if(bin[i] == true && bin[i+1] == false)
         {
-            this->buttonvalues[i/2][currentHead] = true;
+            this->m_buttonvalues[i/2][m_currentHead] = true;
         }
         else
         {
-            this->buttonvalues[i/2][currentHead] = false;
+            this->m_buttonvalues[i/2][m_currentHead] = false;
         }
     }
 
@@ -164,25 +162,25 @@ void Xbee::parseMessage()
     {
         if(bin[i] == true && bin[i+1] == false)
         {
-            this->buttonvalues[i/2+4][currentHead] = true;
+            this->m_buttonvalues[i/2+4][m_currentHead] = true;
         }
         else
         {
-            this->buttonvalues[i/2+4][currentHead] = false;
+            this->m_buttonvalues[i/2+4][m_currentHead] = false;
         }
     }
 
     // update the head
-    currentHead++;
-    if(currentHead >= SAVE_SIZE)
+    m_currentHead++;
+    if(m_currentHead >= SAVE_SIZE)
     {
-        currentHead=0;
+        m_currentHead=0;
     }
 }
 
 float Xbee::getCurrentValue(CONTROLLER controller)
 {
-    return currentValues[controller];
+    return m_currentValues[controller];
 }
 
 float Xbee::findAxisMedian(int index)
@@ -206,11 +204,11 @@ float Xbee::findAxisMedian(int index)
         num_same=0;
         for(int j = 0; j<SAVE_SIZE; j++)
         {
-            if(this->axisvalues[index][i] < this->axisvalues[index][j])
+            if(this->m_axisvalues[index][i] < this->m_axisvalues[index][j])
             {
                 num_higher++;
             }
-            else if(this->axisvalues[index][i] > this->axisvalues[index][j])
+            else if(this->m_axisvalues[index][i] > this->m_axisvalues[index][j])
             {
                 num_lower++;
             }
@@ -221,7 +219,7 @@ float Xbee::findAxisMedian(int index)
         }
         if(abs(num_higher-num_lower) < num_same)
         {
-            return this->axisvalues[index][i];
+            return this->m_axisvalues[index][i];
         }
     }
     return 0;
@@ -233,7 +231,7 @@ bool Xbee::findButtonMedian(int index)
     int num_false = 0;
     for(int i = 0; i<SAVE_SIZE; i++)
     {
-        if(this->buttonvalues[index][i])
+        if(this->m_buttonvalues[index][i])
         {
             num_true++;
         }
@@ -255,16 +253,16 @@ void Xbee::intToBinary(int n, bool *bin)
     }
 }
 
-bool Xbee::isActive()
+bool Xbee::isDisabled()
 {
-    return !isDisabled && firstConnected;
+    return m_isDisabled;
 }
 
 bool Xbee::isNewValues()
 {
     // return if new values are found and reset the flag
-    bool temp = isNewValuesFound;
-    isNewValuesFound = false;
+    bool temp = m_isNewValuesFound;
+    m_isNewValuesFound = false;
     return temp;
 }
 
