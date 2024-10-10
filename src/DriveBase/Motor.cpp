@@ -77,38 +77,23 @@ void Motor::setSpeed(float percent)
         }
     }
 
-    /*
-    // if the projected speed is greater than current speed ramp use ramp up
-    if(RAMP_UP_RATE_PERCENT < fabs(percent) - fabs(m_speed))
-    {
-        if(percent < 0)
-        {
-            m_speed = m_speed - RAMP_UP_RATE_PERCENT;
-        }
-        else
-        {
-            m_speed = m_speed + RAMP_UP_RATE_PERCENT;
-        }
-    }
-    // if the projected speed is less than current speed use ramp down
-    else if(RAMP_DOWN_RATE_PERCENT < fabs(m_speed) - fabs(percent) )
-    {
-        if(percent < 0)
-        {
-            m_speed = m_speed + RAMP_DOWN_RATE_PERCENT;
-        }
-        else
-        {
-            m_speed = m_speed - RAMP_DOWN_RATE_PERCENT;
-        }
-    }
-    else
-    {
-        m_speed = percent;
-    }
-    */
+   updateMotor();
+}
 
+// return the speed that the motor is set to
+float Motor::getSpeed()
+{
+    return m_speed;
+}
 
+void Motor::forceStop()
+{
+    m_speed = 0;
+    updateMotor();
+}
+
+void Motor::updateMotor()
+{
     // If the target speed is negative, set the PWM duty cycle to the reverse range from 1500(0%) to 1000(-100%)
     if(m_speed < 0)
     {
@@ -124,10 +109,4 @@ void Motor::setSpeed(float percent)
     {
         m_motor.writeMicroseconds(NEUTRAL);
     }
-}
-
-// return the speed that the motor is set to
-float Motor::getSpeed()
-{
-    return m_speed;
 }

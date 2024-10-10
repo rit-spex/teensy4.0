@@ -170,3 +170,11 @@ void DriveBase::updateSingleWheelSpeed(int wheelIndex, float targetSpeed)
 }
 
 #endif
+
+void DriveBase::forceStop()
+{
+    for(int i = 0; i < NUM_WHEELS; i++)
+    {
+        m_wheels[i].forceStop();
+    }
+}

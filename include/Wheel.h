@@ -59,6 +59,8 @@ class Wheel {
         void updatePID(int timeInterval_ms);
         #endif
 
+        void forceStop();
+
     private:
 
         Motor m_motor;

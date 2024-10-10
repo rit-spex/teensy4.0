@@ -20,9 +20,12 @@ class Motor {
         ~Motor();
         void setSpeed(float percent);
         float getSpeed();
+        void forceStop();
     private:
         Servo m_motor;
         float m_speed;
         int m_direction;
+
+        void updateMotor();
 };
 #endif

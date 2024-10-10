@@ -39,6 +39,9 @@ class DriveBase {
         void updateSingleWheelSpeed(int wheelIndex, float targetSpeed);
         #endif
         void drive(float left_axis, float right_axis);
+
+        // stop the wheels immedately
+        void forceStop();
     private:
         // An array of the rover's wheels
         Wheel m_wheels[NUM_WHEELS];

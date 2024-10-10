@@ -39,3 +39,8 @@ void Wheel::updatePID(int timeInterval_ms)
 }
 
 #endif
+
+void Wheel::forceStop()
+{
+    m_motor.forceStop();
+}

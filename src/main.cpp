@@ -122,6 +122,21 @@ void loop()
     #if MASTER_TEENSY
     #if ENABLE_XBEE
     xbee.UpdateValues();
+
+    // check if xbee is disabled
+    if(xbee.isDisabled())
+    {
+      mbb.disable();
+    }
+
+    // if mainbodyboard is disabled then disable everything
+    if (mbb.isDisabled())
+    {
+      #if ENABLE_ARM
+      arm.disable();
+      #endif
+    }
+
     if(xbee.isNewValues() && !xbee.isDisabled())
     {
       xbee.printValues();
@@ -182,11 +197,6 @@ void loop()
         arm.moveBase(Arm::Direction::OFF);
       }
       #endif
-    }
-
-    if(xbee.isDisabled())
-    {
-      mbb.disable();
     }
 
     #if ENABLE_DRIVEBASE

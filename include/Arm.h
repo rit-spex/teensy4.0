@@ -34,9 +34,14 @@ class Arm
         void moveClaw(Direction direction);
         void moveArm(Direction shoulderDirection, Direction wristDirection, Direction baseDirection, Direction clawDirection);
         
-        TicI2C tic{CLAW_I2C_ID}; // stepper motor
+        void disable();
 
+        // stepper motor
+        TicI2C tic{CLAW_I2C_ID}; 
     private:
+
+        // if disable flag is true then stop all arm motion and prevent the arm from moving
+        bool m_disabled = false;
 
         // Changing this time will change the motor speeds 30 us seems to be a good starting speed
         int time = 80; // time in microseconds <- lower num mean faster fun
