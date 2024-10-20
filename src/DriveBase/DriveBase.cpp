@@ -32,12 +32,10 @@ m_wheels{
     m_CAN = can;
     #endif
     #if ENABLE_ENCODER
-    this->m_targetRPM[0] = 0;
-    this->m_targetRPM[1] = 0;
-    this->m_targetRPM[2] = 0;
-    this->m_targetRPM[3] = 0;
-    this->m_targetRPM[4] = 0;
-    this->m_targetRPM[5] = 0;
+    for(int i = 0; i<NUM_WHEELS; i++)
+    {
+        this->m_targetRPM[i] = 0;
+    }
     #endif
 }
 
@@ -105,23 +103,13 @@ void DriveBase::updateRPM(int timeInterval_ms)
 // Retrieves the target RPM from the CAN bus
 void DriveBase::getTargetRPM()
 {
-
-    // if(m_can->newMessage(CAN::Message_ID::TARGET_VELOCITY))
-    // {
-    //     CAN_message_t msg = m_can->getMessage(CAN::Message_ID::TARGET_VELOCITY);
-    //     for (int i = 0; i < NUM_WHEELS; i++)
-    //     {
-    //         if((msg.buf[6]&(1<<i)) != 0)//if bit is on
-    //         {
-    //             targetVelocity[i] = (float)msg.buf[i] * -1; // This line will change based on message packing
-    //         }
-    //         else
-    //         {
-    //             targetVelocity[i] = (float)msg.buf[i] * 1; // This line will change based on message packing
-    //         }
-    //     }
-    // }
-
+    if(m_CAN->isNewMessage(CAN::Message_ID::TARGET_RPM))
+    {
+        for (int i = 0; i < NUM_WHEELS; i++)
+        {
+            m_targetRPM[i] = m_CAN->getUnpackedMessage(CAN::Message_ID::TARGET_RPM, i);    
+        }
+    }
 }
 #endif // DISABLE_CAN
 

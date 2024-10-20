@@ -55,8 +55,14 @@ class MainBodyBoard {
         // updates all of the subsystems
         void updateSubsystems(int timeInterval_ms);
 
+        // run any background process while it is not doing main tasks
+        void runBackgroundProcess(void);
+
         // disables the teensy
         void disable();
+
+        // check if the mbb is disabled
+        bool isDisabled();
 
         // Drives the rover based on the left and right joystick values - ONLY FOR MASTER_TEENSY
         #if ENABLE_DRIVEBASE
@@ -71,7 +77,7 @@ class MainBodyBoard {
         bool m_disabled = false;
 
         #if ENABLE_CAN
-            CAN m_can = CAN( CAN::CAN_MB::MAIN_BODY );
+            CAN m_can = CAN();
         #endif
 
         #if ENABLE_DRIVEBASE

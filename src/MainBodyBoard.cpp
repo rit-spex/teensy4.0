@@ -1,21 +1,22 @@
 #include "../include/MainBodyBoard.h"
 
-MainBodyBoard::MainBodyBoard()
-{
-    pinMode(STATUS_LIGHT_PIN, OUTPUT);
-}
+MainBodyBoard::MainBodyBoard(){}
 
-MainBodyBoard::~MainBodyBoard()
-{
-
-}
+MainBodyBoard::~MainBodyBoard(){}
 
 void MainBodyBoard::startUp()
 {
-    // set the status light to off
+    // set up the status light
+    pinMode(STATUS_LIGHT_PIN, OUTPUT);
+
+    // set the status light to stay on
     digitalWrite(STATUS_LIGHT_PIN, HIGH);
     m_statusLightWait = floor(STATUS_LIGHT_FREQUENCY_MS/UPDATE_RATE_MS);
     m_statusLightOn = true;
+    
+    #if ENABLE_CAN
+    m_can.startCAN();
+    #endif
 }
 
 void MainBodyBoard::BlinkStatusLight()
@@ -43,52 +44,65 @@ void MainBodyBoard::BlinkStatusLight()
 
 void MainBodyBoard::updateSubsystems(int timeInterval_ms)
 {
+    #if ENABLE_CAN
+    m_disabled = m_can.getUnpackedMessage(CAN::Message_ID::E_STOP);
+    #endif
+
     if(!m_disabled)
     {
         BlinkStatusLight();
-    }
-
-    // uint8_t locationA[8] = {35,122,96,00,64,66,15,00};
-    // uint8_t locationB[8] = {35,122,96,00,00,00,00,00};
-    // uint8_t data[8] = {0,0,0,0,0,0,0,0};
-    // can.sendMessage(CAN::CAN_MB::JETSON,CAN::Message_ID::E_STOP, data);
-    // can.TEST();
-
-    // if(can.IsEStop(can.getMessage(CAN::Message_ID::E_STOP)))
-    // {
-    //     statusLightWait = -1;
-    //     digitalWrite(STATUS_LIGHT_PIN, HIGH);
-    // }
-    // else if(statusLightWait < 0)
-    // {
-    //     statusLightWait = 0;
-    // }
-    // #endif
-
-    #if ENABLE_DRIVEBASE
-        #if ENABLE_ENCODER
-        m_drive_base.updateRPM(timeInterval_ms);
+        #if ENABLE_DRIVEBASE
+            #if ENABLE_ENCODER
+            m_drive_base.updateRPM(timeInterval_ms);
+            #endif
         #endif
-    #endif
 
-    #if ENABLE_TEMP
-    m_temp_subsystem.updateFans();
+        #if ENABLE_TEMP
+        m_temp_subsystem.updateFans();
+        #endif
+    }
+    else
+    {
+        #if ENABLE_SERIAL
+        Serial.println("DISABLED");
+        #endif
+    }
+}
+
+void MainBodyBoard::runBackgroundProcess(void)
+{
+    #if ENABLE_CAN
+    m_can.readMsgBuffer();
     #endif
 }
+
 
 #if ENABLE_DRIVEBASE
 #if MASTER_TEENSY
 void MainBodyBoard::drive(float left_axis, float right_axis)
 {
-
-    m_drive_base.drive(left_axis, right_axis);
-
+    if(!m_disabled)
+    {
+        m_drive_base.drive(left_axis, right_axis);
+    }
 }
 #endif
 #endif
 
 void MainBodyBoard::disable()
 {
+    // disable the rover and stop everything
     m_disabled = true;
+
+    // set the led to solid
     digitalWrite(STATUS_LIGHT_PIN, HIGH);
+
+    #if ENABLE_DRIVEBASE
+    m_drive_base.drive(0,0);
+    #endif
+}
+
+bool MainBodyBoard::isDisabled()
+{
+    return m_disabled; 
 }
