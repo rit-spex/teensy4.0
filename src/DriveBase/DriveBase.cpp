@@ -4,6 +4,9 @@
 * Constructor for the drive base class.
 * Initializes the wheels of the rover.
 */
+
+// wheels can head in different directions FIX
+
 #if ENABLE_CAN
 DriveBase::DriveBase(CAN *can):
 #else
