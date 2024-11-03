@@ -100,6 +100,19 @@ void DriveBase::updateRPM(int timeInterval_ms)
         m_wheels[i].updatePID(timeInterval_ms);
     }
 
+    #if ENABLE_SERIAL
+    for(int i =0; i<NUM_WHEELS; i++)
+    {
+        Serial.print("Wheel num: ");
+        Serial.print(i);
+        Serial.print(" target rpm: ");
+        Serial.print(m_targetRPM[i]);
+        Serial.print(" current rpm: ");
+        Serial.println(m_wheels[i].getRPM());
+
+    }
+    #endif
+
 }
 
 #if ENABLE_CAN

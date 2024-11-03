@@ -9,14 +9,14 @@
 #define UPDATE_RATE_MS 40
 
 //milliseconds in a minute
-#define MS_IN_MIN 60000.0
+#define MS_IN_MIN 60000
 
 //********************************************************* DRIVETRAIN CONSTANTS *******************************************************
 //The max speed of the motors
-#define PERCENT_MAX 0.45
+#define PERCENT_MAX 0.7
 
-// Max RPM of the motors
-#define MAX_RPM 5000
+// Max RPM of the motors max 1100 with no load
+#define MAX_RPM 1100
 
 // the PMW values of the sparkMAX
 #define SPARK_MAX_MAX_SPEED (1500 + 500 * PERCENT_MAX)
@@ -25,7 +25,7 @@
 #define MIN_REVERSE 1475
 #define SPARK_MAX_MIN_SPEED (1500 - 500 * PERCENT_MAX)
 
-#define COUNTS_PER_REV 1012
+#define COUNTS_PER_REV 2048
 
 // number of wheels on the rover
 #define NUM_WHEELS 6
@@ -35,8 +35,8 @@
 #define RIGHTDIRECTION 1 //positive 1 or negitive -1
 
 // the time it takes to go from 0 to 100
-#define RAMP_UP_TIME   3000 //milliseconds
-#define RAMP_DOWN_TIME 3000  //milliseconds
+#define RAMP_UP_TIME   1000//3000 //milliseconds
+#define RAMP_DOWN_TIME 1000//3000  //milliseconds
 
 // The percent Increase or Decrease per cycle
 #define RAMP_UP_RATE_PERCENT   ((1.00)/(RAMP_UP_TIME/UPDATE_RATE_MS))
@@ -46,12 +46,12 @@
 #define MAX_DIFFERENCE_PERCENT 0.07
 
 namespace PIDConstants {
-    constexpr double KP0 = 0.001;
-    constexpr double KP1 = 0.001;
-    constexpr double KP2 = 0.001;
-    constexpr double KP3 = 0.001;
-    constexpr double KP4 = 0.001;
-    constexpr double KP5 = 0.001;
+    constexpr double KP0 = 0.01;
+    constexpr double KP1 = 0.01;
+    constexpr double KP2 = 0.01;
+    constexpr double KP3 = 0.01;
+    constexpr double KP4 = 0.01;
+    constexpr double KP5 = 0.01;
 
     constexpr double KI0 = 0.0;
     constexpr double KI1 = 0.0;
@@ -92,5 +92,8 @@ namespace PIDConstants {
 #define ActiveCAN CAN::CAN_MODE::CAN2
 #define CAN_BAUDRATE 500000
 #define MSG_LENGTH 8
+
+//******************************************************** XBEE CONSTANTS *******************************************************
+#define NO_MESSAGE_ERROR_NUM 100 // 4 sec
 
 #endif // CONSTANTS_H

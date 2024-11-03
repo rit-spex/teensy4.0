@@ -34,6 +34,12 @@
 #endif
 #endif
 
+  #if ENABLE_DEMO_ENCODER
+  // #define ENCODER_RUN_CYCLE_MICROSEC 1000
+  // IntervalTimer encoderTimer;
+  QuadratureDecoder demo_encoder{ENC_A_PIN_0, ENC_B_PIN_0};
+  #endif
+
 unsigned long currentRunCycle = 0;
 
 // create the main body board
@@ -50,6 +56,13 @@ Xbee xbee;
 Arm arm;
 #endif
 #endif
+
+// #if ENABLE_DEMO_ENCODER
+// void TEST()
+// {
+//   demo_encoder.updateCount(1);
+// }
+// #endif
 
 void setup()
 {
@@ -98,15 +111,17 @@ void setup()
   delay(1000);
   #endif
 
+  #if ENABLE_DEMO_ENCODER
+  demo_encoder.begin();
+  // encoderTimer.begin(TEST, 1000);
+  #endif
+
   //update the currentRunCycle to be synced with the current time
   currentRunCycle = floor(millis()/UPDATE_RATE_MS);
 }
 
 void loop()
 {
-  #if ENABLE_DEMO_ENCODER
-  QuadratureDecoder demo_encoder{ENC_A_PIN_0, ENC_B_PIN_0};
-  #endif
   mbb.runBackgroundProcess();
   if(millis() >= UPDATE_RATE_MS * currentRunCycle)
   {

@@ -98,7 +98,7 @@ void Xbee::UpdateValues()
     else
     {
         m_numNoSignal++;
-        if(m_numNoSignal > 100)
+        if(m_numNoSignal > NO_MESSAGE_ERROR_NUM)
         {
             // empty out of the values
             for(int i = 0; i<NUM_BUTTONS; i++)

@@ -98,7 +98,7 @@ void MainBodyBoard::disable()
     digitalWrite(STATUS_LIGHT_PIN, HIGH);
 
     #if ENABLE_DRIVEBASE
-    m_drive_base.drive(0,0);
+    m_drive_base.forceStop();
     #endif
 }
 

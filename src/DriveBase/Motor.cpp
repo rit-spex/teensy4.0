@@ -17,6 +17,7 @@ Motor::~Motor()
 //write to the motor
 void Motor::setSpeed(float percent)
 {
+    Serial.print(percent);
     //First check if the target speed is within the bounds of -1 to 1
     if(percent < -PERCENT_MAX)
     {
