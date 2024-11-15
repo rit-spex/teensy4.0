@@ -31,7 +31,6 @@ Xbee::Xbee()
         }
     }
     m_numNoSignal = 0;
-    m_lastSignalCount = 0;
 }
 
 void Xbee::UpdateValues()
@@ -127,13 +126,9 @@ void Xbee::parseMessage()
     for(int i = 0; i < NUM_AXES; i++)
     {
         int input = Serial2.read();
-        if(input > 200 || input < 0)
-        {
-            //error_count++;
-        }
+        if(input > 200 || input < 0){}
         else
         {
-            //good_count++;
             float value = ((input - 100.0)/100.0) * PERCENT_MAX;
             this->m_axisvalues[i][m_currentHead] = value;
         }

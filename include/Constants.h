@@ -35,8 +35,8 @@
 #define RIGHTDIRECTION 1 //positive 1 or negitive -1
 
 // the time it takes to go from 0 to 100
-#define RAMP_UP_TIME   1000//3000 //milliseconds
-#define RAMP_DOWN_TIME 1000//3000  //milliseconds
+#define RAMP_UP_TIME   3000 //milliseconds
+#define RAMP_DOWN_TIME 3000  //milliseconds
 
 // The percent Increase or Decrease per cycle
 #define RAMP_UP_RATE_PERCENT   ((1.00)/(RAMP_UP_TIME/UPDATE_RATE_MS))
@@ -94,6 +94,6 @@ namespace PIDConstants {
 #define MSG_LENGTH 8
 
 //******************************************************** XBEE CONSTANTS *******************************************************
-#define NO_MESSAGE_ERROR_NUM 100 // 4 sec
+#define NO_MESSAGE_ERROR_NUM 25 // 1 sec
 
 #endif // CONSTANTS_H

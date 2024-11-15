@@ -31,8 +31,6 @@ private:
     // a flag if the xbee is disabled
     bool m_isDisabled = false;
     
-    int m_lastSignalCount;
-
     // a flag that once triggered will start the xbee
     bool m_firstConnected = false;
 
@@ -60,10 +58,6 @@ private:
     void intToBinary(int n, bool *bin);
 
 public:
-
-    long long error_count = 0;
-    long long good_count = 0;
-
     enum CONTROLLER
     {
         LEFT_Y_AXIS   = 0, // left drive 
