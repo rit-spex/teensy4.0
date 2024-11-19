@@ -1,71 +1,66 @@
 #include "../include/CAN.h"
-#include <Arduino.h>
-#include "Pinout.h"
-
-CAN::CAN(CAN_MB mailBox)
-{
-  
-  m_CAN.enableMBInterrupt((FLEXCAN_MAILBOX) mailBox);
-  
-  // // Set stop message to 0
-  CAN_message_t stopMessage;
-  stopMessage.id = CAN::E_STOP;
-  stopMessage.len = 8;
-  for(int i = 0; i < 8; i++)
-  {
-    stopMessage.buf[i] = 0;
-  }
-
-  m_objectDict[CAN::E_STOP] = stopMessage;
-  
-  
-  m_CAN.setMB( (FLEXCAN_MAILBOX)CAN::MAIN_BODY,     TX, STD); // Set the mailbox to transmit
-  m_CAN.setMB( (FLEXCAN_MAILBOX)CAN::JETSON,        TX, STD); // Set the mailbox to transmit
-  m_CAN.setMB( (FLEXCAN_MAILBOX)CAN::SCIENCE_BOARD, TX, STD); // Set the mailbox to transmit
-  m_CAN.setMB( (FLEXCAN_MAILBOX)CAN::ARM_BOARD,     TX, STD); // Set the mailbox to transmit
-
-            // FLEXCAN_MAILBOX::MB0, 
-            // MAIN_BODY = FLEXCAN_MAILBOX::MB1, 
-            // SCIENCE_BOARD = FLEXCAN_MAILBOX::MB2,
-            // ARM_BOARD = FLEXCAN_MAILBOX::MB3
-
-  m_CAN.setMB( FLEXCAN_MAILBOX::MB1, RX,FLEXCAN_IDE::STD); // Set the mailbox to receive
-
-  // Start the CAN bus
-  m_CAN.begin(); // <- This is needed
-  // Set the the configuration of the CAN bus
-  // CANFD_timings_t config;
-  // config.clock = CLK_24MHz;
-  // config.baudrate = 500000;
-  // config.baudrateFD = 500000;
-  // config.propdelay = 190;
-  // config.bus_length = 1;
-  // config.sample = 70;
-  // m_CAN.setBaudRate(config); // <- This is needed
-
-
-  //This is the old way of setting the baud rate for CAN 2.0
-  m_CAN.setBaudRate(500000); 
-
-  // Set the interrupt to call the canSniff function
-  m_CAN.onReceive((FLEXCAN_MAILBOX)mailBox, &CAN::CANSniff);
-
-  //m_isEStop = false;
-}
-
 
 // Create an object dictionary to store the messages
 CAN::ObjectDictionary CAN::m_objectDict;
+
 // Create a message flag map to track new messages
-CAN::MessageFlag CAN::m_messageFlag;
+CAN::MessageFlag CAN::m_messageFlag; 
+
+CAN::CAN()
+{  
+  // Set stop message to 0
+  CANMessage stopMessage;
+  stopMessage.id = CAN::E_STOP;
+  stopMessage.len = MSG_LENGTH;
+  for(int i = 0; i < MSG_LENGTH; i++)
+  {
+    stopMessage.data[i] = 0;
+  }
+
+  m_objectDict[CAN::E_STOP] = stopMessage;
+}
+
+void CAN::startCAN()
+{
+  // const ACANPrimaryFilter primaryFilter(&CAN::CANSniff);
+  // Set the settings to the CAN
+  ACAN_T4_Settings settings (CAN_BAUDRATE) ;
+  settings.mTxPinIsOpenCollector = true ;
+  settings.mRxPinConfiguration = ACAN_T4_Settings::NO_PULLUP_NO_PULLDOWN ;
+
+  // // Start the CAN bus based on ActiveCAN
+  if(CAN::CAN_MODE::CAN1 == ActiveCAN)
+  {
+    ACAN_T4::can1.begin (settings);//, &primaryFilter, 1) ;
+  }
+  else if(CAN::CAN_MODE::CAN2 == ActiveCAN)
+  {
+    ACAN_T4::can2.begin (settings);//, &primaryFilter, 1) ;
+  }
+  else if(CAN::CAN_MODE::CAN3 == ActiveCAN)
+  {
+    ACAN_T4::can3.begin (settings);//, &primaryFilter, 1) ;
+  }
+  #if ENABLE_SERIAL
+    Serial.println("CAN StartUp");
+  #endif
+}
 
 // Function to be called when a message is recieved
-void CAN::CANSniff(const CAN_message_t &msg)
+void CAN::CANSniff(const CANMessage &msg)
 {
   Message_ID id = static_cast<Message_ID>(msg.id);
 
   // Check if the message will need to be filtered due to an E-Stop
-  if(IsEStop(msg)){return;}
+  if(IsEStop(msg))
+  {
+    m_objectDict.at(CAN::E_STOP).data[0] = 1;
+    return;
+  }
+  else
+  {
+    m_objectDict.at(CAN::E_STOP).data[0] = 0;
+  }
 
   // Check if the ID exists in the m_objectDict map
   if (m_objectDict.find(id) == m_objectDict.end()) {
@@ -78,9 +73,9 @@ void CAN::CANSniff(const CAN_message_t &msg)
     bool newMessage = false;
     const auto &existingMessage = m_objectDict[id];
 
-    for(unsigned int i=0; i<sizeof(msg.buf); i++)
+    for(unsigned int i=0; i<sizeof(msg.data); i++)
     {
-      if(msg.buf[i] != existingMessage.buf[i])
+      if(msg.data[i] != existingMessage.data[i])
       {
         newMessage = true;
         break;
@@ -90,41 +85,110 @@ void CAN::CANSniff(const CAN_message_t &msg)
   }
 
   m_objectDict[id] = msg;
+
+  #if ENABLE_SERIAL
+  Serial.print("Message Received");
+  Serial.println(msg.id);
+  #endif
 }
 
+void CAN::readMsgBuffer(void)
+{
+  // the current msg
+  CANMessage message;
+
+  // get the message from the hardware.
+  if(CAN::CAN_MODE::CAN1 == ActiveCAN)
+  {
+    // if doesn't have message then end
+    if(!ACAN_T4::can1.receive(message))
+    {
+      return;
+    }
+  }
+  else if(CAN::CAN_MODE::CAN2 == ActiveCAN)
+  {
+    // if doesn't have message then end
+    if(!ACAN_T4::can2.receive(message))
+    {
+      return;
+    }
+  }
+  else if(CAN::CAN_MODE::CAN3 == ActiveCAN)
+  {
+    // if doesn't have message then end
+    if(!ACAN_T4::can3.receive(message))
+    {
+      return;
+    }
+  }
+
+  CANSniff(message);
+}
+
+
 // Send a message to the CAN bus
-void CAN::sendMessage( CAN_MB mailBox, Message_ID id, uint8_t message[8])
+void CAN::sendMessage( CAN_MB mailBox, Message_ID id, uint8_t message[MSG_LENGTH])
 {
   // Create a message
-  CAN_message_t msg = CAN_message_t();
+  CANMessage msg;
 
   // Set the message ID to 0x123
   msg.id = id;
   
   // Set the message length to 8
-  msg.len = 8;
+  msg.len = MSG_LENGTH;
 
   // Set the message buffer to the m_message buffer
-  for(int i = 0; i < 8; i++)
+  for(int i = 0; i < MSG_LENGTH; i++)
   {
-    msg.buf[i] = message[i];
+    msg.data[i] = message[i];
   }
 
   // Add the message to the object dictionary
   m_objectDict[static_cast<Message_ID>(msg.id)] = msg;
 
   // Send the message
-  m_CAN.write( (FLEXCAN_MAILBOX)mailBox, msg);
-
+  if(CAN::CAN_MODE::CAN1 == ActiveCAN)
+  {
+    ACAN_T4::can1.tryToSend (msg);
+  }
+  else if(CAN::CAN_MODE::CAN2 == ActiveCAN)
+  {
+    ACAN_T4::can2.tryToSend (msg);
+  }
+  else if(CAN::CAN_MODE::CAN3 == ActiveCAN)
+  {
+    ACAN_T4::can3.tryToSend (msg);
+  }
 }
 
-// Retrieve a message from the object dictionary
-CAN_message_t CAN::getMessage(Message_ID id)
+// get message out of object dictionary, unpacked. For some unpackage index will matter otherwise not important
+int CAN::getUnpackedMessage(Message_ID id, int index = 0)
 {
-  return m_objectDict[id];
+  switch(id)
+  {
+    case Message_ID::E_STOP:
+    return m_objectDict.at(CAN::Message_ID::E_STOP).data[0];
+    break;
+
+    case Message_ID::TARGET_RPM:
+    return m_objectDict.at(CAN::Message_ID::TARGET_RPM).data[index];
+    break;
+
+    case Message_ID::CURRENT_RPM:
+    return m_objectDict.at(CAN::Message_ID::CURRENT_RPM).data[index];
+    break;
+
+    default:
+    return 0;
+    break;
+
+  }
 }
 
-bool CAN::newMessage(Message_ID id)
+// checks if there has been a new msg on the id
+bool CAN::isNewMessage(Message_ID id)
 {
     auto it = m_messageFlag.find(id);
     if (it != m_messageFlag.end()) {
@@ -135,13 +199,13 @@ bool CAN::newMessage(Message_ID id)
     }
 }
 
-bool CAN::IsEStop(const CAN_message_t &msg)
+bool CAN::IsEStop(const CANMessage &msg)
 {
   //if the message E_STOP is off in object dictionary 
   if(m_objectDict.at(CAN::E_STOP).id == 0)
   {
     // if the message is an E-Stop message and the E-Stop is non active turn on the E-Stop
-    if(msg.id == CAN::E_STOP && msg.buf[0] == 1)
+    if(msg.id == CAN::E_STOP && msg.data[0] == 1)
     {
       // for each message in the object dictionary, set the message flag to true and clear the message buffer
       for(const auto &message : m_objectDict)
@@ -149,13 +213,12 @@ bool CAN::IsEStop(const CAN_message_t &msg)
         if(message.first != CAN::E_STOP)
         {
           m_messageFlag[message.first] = true;
-          for(int i = 0; i < 8; i++)
+          for(int i = 0; i < MSG_LENGTH; i++)
           {
-            m_objectDict[message.first].buf[i] = 0;
+            m_objectDict[message.first].data[i] = 0;
           }
         }
       }
-      // m_isEStop = true;
       // filter out the message from canSniff
       return true;
     }
@@ -166,23 +229,12 @@ bool CAN::IsEStop(const CAN_message_t &msg)
   else
   {
     // if the message is an E-Stop message that is and the E-Stop is active turn off the E-Stop
-    if(msg.id == CAN::E_STOP && msg.buf[0] == 0)
+    if(msg.id == CAN::E_STOP && msg.data[0] == 0)
     {
       // do not filter the message. E-Stop will turn off naturally with canSniff
-      // m_isEStop = false;
       return false;
     }
     // E_STOP is active, filter all messages
     return true;
   }
-}
-
-// bool CAN::IsEStop()
-// {
-//   return m_isEStop;
-// }
-
-void CAN::TEST()
-{
-  Serial.println(m_CAN.events());
 }

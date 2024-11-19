@@ -1,70 +1,46 @@
 #include "../../include/Wheel.h"
 
-Wheel::Wheel(PWM_PINS pwm_pin):
-    motor(pwm_pin)
+#if ENABLE_ENCODER
+Wheel::Wheel(PWM_PINS pwm_pin, int direction, ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin, double kp, double ki, double kd)
+     : m_motor(pwm_pin, direction), m_encoder(enc_A_pin, enc_B_pin), m_pid(kp, ki, kd){
+
+     this->m_targetRPM = 0;
+     this->m_currentRPM = 0;
+}
+#else
+Wheel::Wheel(PWM_PINS pwm_pin, int direction):
+    m_motor(pwm_pin, direction){}
+#endif
+
+void Wheel::setSpeed(float targetSpeed)
 {
-    this->targetSpeed = 0;
-    this->currentSpeed = 0;
+    m_motor.setSpeed(targetSpeed);
 }
 
-// Wheel::Wheel(PWM_PINS pwm_pin, ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin, double kp, double ki, double kd) 
-//     : motor(pwm_pin), encoder(enc_A_pin, enc_B_pin), pid(kp, ki, kd){
+#if ENABLE_ENCODER
+void Wheel::setRPM(float targetRPM)
+{
+    this->m_targetRPM = targetRPM;
+}
 
-//     this->targetSpeed = 0;
-//     this->currentSpeed = 0;
-// }
+float Wheel::getRPM()
+{
+    return this->m_currentRPM;
+}
 
-void Wheel::setSpeed(float targetSpeed) {
-    this->targetSpeed = targetSpeed;
-    /*
-    Do something here with controls for PWM
-    https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces
+/*
+* Updates the PID controller for the wheel
+*/
+void Wheel::updatePID(int timeInterval_ms)
+{
+    this->m_currentRPM = this->m_encoder.getRPM(timeInterval_ms);
+    float pidOutput = this->m_pid.update(this->m_targetRPM, this->m_currentRPM);
+    this->setSpeed(pidOutput);
+}
 
-    Full Reverse 1000 us pulse width
-    Proportional Reverse 1000 to 1475 us pulse width
-    Neutral 1475 to 1525 us pulse width
-    Proportional Forward 1525 to 2000 us pulse width
-    Full Forward 2000 us pulse width
+#endif
 
-    Maximum pulse range 500 to 2500 us
-    Valid frequency 50 to 200 Hz
-    */
-   
-    // if(this->targetSpeed == 0){
-    //     this->pwm_duty_cycle = NEUTRAL;
-    // }
-    // else{
-    //     double pid_output = this->pid.update(abs(this->targetSpeed), abs(this->currentSpeed));
-
-    //     if (this->targetSpeed < 0) {
-    //         this->pwm_duty_cycle = (pid_output - OUTPUT_MIN) / (OUTPUT_MAX - OUTPUT_MIN) * (FULL_REVERSE - MIN_REVERSE);
-    //     }
-
-    //     else if (this->targetSpeed > 0) {
-    //         this->pwm_duty_cycle = (pid_output - OUTPUT_MIN) / (OUTPUT_MAX - OUTPUT_MIN) * (FULL_FORWARD - MIN_FORWARD);
-    //     }
-    // }
-
-    if(this->targetSpeed < 0)
-    {
-        if(this->targetSpeed < -1.0)
-        {
-            this->targetSpeed = -1.0;
-        }
-        this->pwm_duty_cycle = NEUTRAL - (SPARK_MAX_MIN - NEUTRAL) * this->targetSpeed;
-    }
-    else if(this->targetSpeed > 0)
-    {
-        if(this->targetSpeed > 1.0)
-        {
-            this->targetSpeed = 1.0;
-        }
-        this->pwm_duty_cycle = NEUTRAL + (SPARK_MAX_MAX - NEUTRAL) * this->targetSpeed;
-    }
-    else
-    {
-        this->pwm_duty_cycle = NEUTRAL;
-    }
-
-    motor.setSpeed(this->pwm_duty_cycle);
+void Wheel::forceStop()
+{
+    m_motor.forceStop();
 }

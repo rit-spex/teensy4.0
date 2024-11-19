@@ -1,23 +1,31 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
+#include "Pinout.h"
+#include "Constants.h"
+#include "DEBUG.h"
+#include <math.h>
+
+#if ENABLE_SIMULATOR
+#include "../TestSystem/Simulator.h"
+#else
 #include <Arduino.h>
 #include <Servo.h>
-#include "Motor.h"
-#include "Pinout.h"
+#endif
 
-#define PERCENT_MAX 0.3
-
-#define SPARK_MAX_MIN (1500 - 500 * PERCENT_MAX)
-#define SPARK_MAX_MAX (1500 + 500 * PERCENT_MAX)
-
+// Motor class for controlling the motors, this is meant to be a generic class for all motors
 class Motor {
     public:
-        Motor(PWM_PINS pwm_pin);
+        Motor(PWM_PINS pwm_pin, int direction);
         ~Motor();
-        void setSpeed(float duty_cycle_us);
+        void setSpeed(float percent);
+        float getSpeed();
+        void forceStop();
     private:
-        int pwm_pin;
-        Servo motor;
+        Servo m_motor;
+        float m_speed;
+        int m_direction;
+
+        void updateMotor();
 };
 #endif

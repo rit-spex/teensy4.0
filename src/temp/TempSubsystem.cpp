@@ -5,7 +5,11 @@
 * Constructor for the temp subsystem class.
 * Initializes the thermistors.
 */
+#if ENABLE_CAN
 TempSubsystem::TempSubsystem(CAN *can) :
+#else
+TempSubsystem::TempSubsystem() :
+#endif
     m_thermistors
     {
         Thermistor(THERMISTOR_PINS::THERMISTOR_PIN_0), 
@@ -19,8 +23,10 @@ TempSubsystem::TempSubsystem(CAN *can) :
         Fan(FAN_PINS::FAN_PIN_1),
         Fan(FAN_PINS::FAN_PIN_2),
         Fan(FAN_PINS::FAN_PIN_3)
-    },
-    m_can(can)
+    }
+    #if ENABLE_CAN
+    ,m_can(can)
+    #endif
 {}
 
 

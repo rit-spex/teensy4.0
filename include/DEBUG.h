@@ -1,5 +1,5 @@
 /*
-File: DEBUG.h 
+File: DEBUG.h
 Author: Tyler Halifax
 Date Created: 3/21/2024
 
@@ -8,20 +8,22 @@ If disable is defined, the corresponding subsystem will be disabled.
 If debug is defined, the corresponding subsystem will be serial printed
 */
 
-// #define DISABLE_STATUS_LIGHT
-// #define DISABLE_CAN
-// #define DISABLE_DRIVEBASE
-#define DISABLE_TEMP
+// enable when encoders are on the base
+#define ENABLE_ENCODER   false
 
-#ifndef DISABLE_STATUS_LIGHT
-// #define DEBUG_STATUS_LIGHT
-#endif
-#ifndef DISABLE_CAN
-// #define DEBUG_CAN
-#endif
-#ifndef DISABLE_DRIVEBASE
-// #define DEBUG_DRIVEBASE
-#endif
-#ifndef DISABLE_TEMP
-// #define DEBUG_TEMP
-#endif
+// enable to test with a single encoder
+#define ENABLE_DEMO_ENCODER false
+
+// if the teensy is the main brain - this will enable both xbee and arm
+#define MASTER_TEENSY    true
+
+// this will disable all hardware and simulate the rover. DO NOT ENABLE ON THE ROVER
+#define ENABLE_SIMULATOR false
+
+// enable each subsystem
+#define ENABLE_CAN       false
+#define ENABLE_DRIVEBASE true
+#define ENABLE_TEMP      false
+#define ENABLE_XBEE      true
+#define ENABLE_SERIAL    true
+#define ENABLE_ARM       false
