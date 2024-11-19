@@ -26,7 +26,7 @@ The main body board is responsible for:
 
 // All of the subsystems
 #if ENABLE_DRIVEBASE
-#include "DriveBase.h"
+#include "./DriveBase/DriveBase.h"
 #endif
 
 #if ENABLE_TEMP

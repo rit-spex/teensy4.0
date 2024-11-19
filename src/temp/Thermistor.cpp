@@ -1,4 +1,4 @@
-#include "../../include/Thermistor.h"
+#include "../../include/Temp/Thermistor.h"
 
 Thermistor::Thermistor(THERMISTOR_PINS thermistorPin) : m_thermistorPin(thermistorPin)
 {

@@ -1,4 +1,4 @@
-#include "../../include/Wheel.h"
+#include "../../include/DriveBase/Wheel.h"
 
 #if ENABLE_ENCODER
 Wheel::Wheel(PWM_PINS pwm_pin, int direction, ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin, double kp, double ki, double kd)
