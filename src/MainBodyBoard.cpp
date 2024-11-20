@@ -1,7 +1,6 @@
 #include "../include/MainBodyBoard.h"
 
 MainBodyBoard::MainBodyBoard(){}
-
 MainBodyBoard::~MainBodyBoard(){}
 
 void MainBodyBoard::startUp()

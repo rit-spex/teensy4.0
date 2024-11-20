@@ -24,6 +24,4 @@ If debug is defined, the corresponding subsystem will be serial printed
 #define ENABLE_CAN       false
 #define ENABLE_DRIVEBASE true
 #define ENABLE_TEMP      false
-#define ENABLE_XBEE      false
 #define ENABLE_SERIAL    true
-#define ENABLE_ARM       false
