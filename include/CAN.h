@@ -23,6 +23,7 @@ class CAN
             E_STOP           = (uint32_t) 0,
             TARGET_RPM       = (uint32_t) 1,
             CURRENT_RPM      = (uint32_t) 2,
+            DRIVE_POWER      = (uint32_t) 3  // this will be left then right power of the wheel, used until encoders are finished
             
         } Message_ID;
 

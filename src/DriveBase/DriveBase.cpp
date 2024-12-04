@@ -117,7 +117,7 @@ void DriveBase::updateRPM(int timeInterval_ms)
 
 #if ENABLE_CAN
 // Retrieves the target RPM from the CAN bus
-void DriveBase::getTargetRPM()
+void DriveBase::setTargetRPM()
 {
     if(m_CAN->isNewMessage(CAN::Message_ID::TARGET_RPM))
     {
@@ -129,7 +129,7 @@ void DriveBase::getTargetRPM()
 }
 #endif // DISABLE_CAN
 
-#else // ENABLE_ENCODER
+#else // DISABLE_ENCODER
 void DriveBase::drive(float left_axis, float right_axis)
 {
     // If the difference between the left and right axis is less than the max difference use normal values

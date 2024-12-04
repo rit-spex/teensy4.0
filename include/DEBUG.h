@@ -21,7 +21,7 @@ If debug is defined, the corresponding subsystem will be serial printed
 #define ENABLE_SIMULATOR false
 
 // enable each subsystem
-#define ENABLE_CAN       false
+#define ENABLE_CAN       true
 #define ENABLE_DRIVEBASE true
 #define ENABLE_TEMP      false
 #define ENABLE_SERIAL    true

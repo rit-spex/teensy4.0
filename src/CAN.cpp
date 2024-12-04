@@ -18,6 +18,15 @@ CAN::CAN()
   }
 
   m_objectDict[CAN::E_STOP] = stopMessage;
+
+  // set default speed to 100
+  CANMessage speedMessage;
+  speedMessage.id = CAN::Message_ID::DRIVE_POWER;
+  speedMessage.len = MSG_LENGTH;
+  stopMessage.data[0] = 100;
+  stopMessage.data[1] = 100;
+
+  m_objectDict[CAN::Message_ID::DRIVE_POWER] = speedMessage;
 }
 
 void CAN::startCAN()
@@ -163,8 +172,8 @@ void CAN::sendMessage( CAN_MB mailBox, Message_ID id, uint8_t message[MSG_LENGTH
   }
 }
 
-// get message out of object dictionary, unpacked. For some unpackage index will matter otherwise not important
-int CAN::getUnpackedMessage(Message_ID id, int index = 0)
+// get message out of object dictionary, unpacked. For some packages, index will matter otherwise not important
+int CAN::getUnpackedMessage(Message_ID id, int index)
 {
   switch(id)
   {
@@ -178,6 +187,10 @@ int CAN::getUnpackedMessage(Message_ID id, int index = 0)
 
     case Message_ID::CURRENT_RPM:
     return m_objectDict.at(CAN::Message_ID::CURRENT_RPM).data[index];
+    break;
+
+    case Message_ID::DRIVE_POWER:
+    return m_objectDict.at(CAN::Message_ID::DRIVE_POWER).data[index];
     break;
 
     default:

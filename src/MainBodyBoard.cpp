@@ -44,7 +44,7 @@ void MainBodyBoard::BlinkStatusLight()
 void MainBodyBoard::updateSubsystems(int timeInterval_ms)
 {
     #if ENABLE_CAN
-    m_disabled = m_can.getUnpackedMessage(CAN::Message_ID::E_STOP);
+    m_disabled = m_can.getUnpackedMessage(CAN::Message_ID::E_STOP, 0);
     #endif
 
     if(!m_disabled)
@@ -53,7 +53,16 @@ void MainBodyBoard::updateSubsystems(int timeInterval_ms)
         #if ENABLE_DRIVEBASE
             #if ENABLE_ENCODER
             m_drive_base.updateRPM(timeInterval_ms);
+            #else
+                #if ENABLE_CAN
+                float leftPower  = ((float)m_can.getUnpackedMessage(CAN::Message_ID::DRIVE_POWER, 0) - 100.0)/100;
+                float rightPower = ((float)m_can.getUnpackedMessage(CAN::Message_ID::DRIVE_POWER, 1) - 100.0)/100;
+
+                m_drive_base.drive(leftPower, rightPower);
+                #endif
+            
             #endif
+
         #endif
 
         #if ENABLE_TEMP
@@ -63,6 +72,7 @@ void MainBodyBoard::updateSubsystems(int timeInterval_ms)
     else
     {
         #if ENABLE_SERIAL
+        digitalWrite(STATUS_LIGHT_PIN, HIGH);
         Serial.println("DISABLED");
         #endif
     }
