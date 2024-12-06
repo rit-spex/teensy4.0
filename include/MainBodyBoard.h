@@ -26,11 +26,11 @@ The main body board is responsible for:
 
 // All of the subsystems
 #if ENABLE_DRIVEBASE
-#include "DriveBase.h"
+#include "DriveBase/DriveBase.h"
 #endif
 
 #if ENABLE_TEMP
-#include "TempSubsystem.h"
+#include "Temperature/TemperatureSubsystem.h"
 #endif
 
 #if ENABLE_CAN
@@ -90,9 +90,9 @@ class MainBodyBoard {
 
         #if ENABLE_TEMP
             #if ENABLE_CAN
-                TempSubsystem m_temp_subsystem = TempSubsystem(&m_can);
+                TemperatureSubsystem m_temperature_subsystem = TemperatureSubsystem(&m_can);
             #else
-                TempSubsystem m_temp_subsystem = TempSubsystem();
+                TemperatureSubsystem m_temperature_subsystem = TemperatureSubsystem();
             #endif
         #endif
 };

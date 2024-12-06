@@ -21,7 +21,7 @@
 
 // includes for the xbee
 #if ENABLE_XBEE
-#include "../include/Xbee.h"
+#include "../include/Extra/Xbee.h"
 #endif
 
 // includes for the arm
@@ -30,7 +30,7 @@
 #else
 #include <Wire.h>
 #endif // ENABLE_SIMULATOR
-#include "../include/Arm.h"
+#include "../include/Extra/Arm.h"
 #endif
 #endif
 
