@@ -20,7 +20,7 @@ the target velocity transmitted over CAN.
 #include "Wheel.h"
 
 #ifdef ENABLE_CAN
-#include "CAN.h"
+#include "../CAN.h"
 #endif
 
 class DriveBase {

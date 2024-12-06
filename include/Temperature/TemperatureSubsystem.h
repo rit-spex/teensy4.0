@@ -1,9 +1,9 @@
 /*
-File: temp_subsystem.h
+File: Temperature_subsystem.h
 Author: Ryan Barry
 Date Created: 1/23/2024
 
-This file defines the temp subsystem class for the rover.
+This file defines the Temperature subsystem class for the rover.
 
 This class is responsible for reading the temperature of the thermistors.
 */
@@ -19,17 +19,17 @@ This class is responsible for reading the temperature of the thermistors.
 #include "Thermistor.h"
 
 #if ENABLE_CAN
-#include "CAN.h"
+#include "../CAN.h"
 #endif
 
 using namespace std;
 
-class TempSubsystem {
+class TemperatureSubsystem {
     public:
         #if ENABLE_CAN
-        TempSubsystem(CAN *can);
+        TemperatureSubsystem(CAN *can);
         #else
-        TempSubsystem();
+        TemperatureSubsystem();
         #endif
 
         float* getTemperature();
