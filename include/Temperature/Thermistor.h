@@ -27,17 +27,17 @@ class Thermistor {
         * Constructor for the thermistor class.
         * Initializes the thermistor.
         */
-        Thermistor(THERMISTOR_PINS thermistorPin);
+        Thermistor(uint8_t thermistor_id);
 
         /*
         * @return The temperature measured by the thermistor
         */
         float getTemperature();
     private:
-        /*
-        * The pin that the thermistor is connected to
-        */
-        THERMISTOR_PINS m_thermistorPin;
+        // the id number of the thermistor, matches with fan_id, used to get pin
+        uint8_t m_thermistor_id;
+
+        // the current temperature
         float m_temperature;
 };
 

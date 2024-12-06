@@ -22,20 +22,11 @@ based on its target speed.
 
 class Wheel {
     public:
-        #if ENABLE_ENCODER
         /*
         * Constructor for the wheel class
-        * @param pwm_pin The PWM pin the wheel is connected to
-        * @param enc_A_pin The A pin of the wheel's quadrature encoder
-        * @param enc_B_pin The B pin of the wheel's quadrature encoder
+        * @param wheel_id: which wheel is the current one
         */
-        Wheel(PWM_PINS pwm_pin, int direction, ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin, double kp, double ki, double kd);
-        #else
-        /*
-        * Constructor for the wheel class if there is no encoder
-        */
-        Wheel(PWM_PINS pwm_pin, int direction);
-        #endif
+        Wheel(uint8_t wheel_id, int direction);
 
         /*
         * Adjust's the PWM signal to the wheel to match the target speed

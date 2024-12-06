@@ -1,15 +1,15 @@
 #include "../../include/DriveBase/Wheel.h"
 
 #if ENABLE_ENCODER
-Wheel::Wheel(PWM_PINS pwm_pin, int direction, ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin, double kp, double ki, double kd)
-     : m_motor(pwm_pin, direction), m_encoder(enc_A_pin, enc_B_pin), m_pid(kp, ki, kd){
+Wheel::Wheel(uint8_t wheel_id, int direction)
+     : m_motor(wheel_id, direction), m_encoder(wheel_id), m_pid(wheel_id){
 
      this->m_targetRPM = 0;
      this->m_currentRPM = 0;
 }
 #else
-Wheel::Wheel(PWM_PINS pwm_pin, int direction):
-    m_motor(pwm_pin, direction){}
+Wheel::Wheel(uint8_t wheel_id, int direction):
+    m_motor(wheel_id, direction){}
 #endif
 
 void Wheel::setSpeed(float targetSpeed)

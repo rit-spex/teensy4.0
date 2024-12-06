@@ -7,10 +7,10 @@ MainBodyBoard::~MainBodyBoard(){}
 void MainBodyBoard::startUp()
 {
     // set up the status light
-    pinMode(STATUS_LIGHT_PIN, OUTPUT);
+    pinMode(PINOUT::STATUS_LIGHT_PIN, OUTPUT);
 
     // set the status light to stay on
-    digitalWrite(STATUS_LIGHT_PIN, HIGH);
+    digitalWrite(PINOUT::STATUS_LIGHT_PIN, HIGH);
     m_statusLightWait = floor(STATUS_LIGHT_FREQUENCY_MS/UPDATE_RATE_MS);
     m_statusLightOn = true;
     
@@ -26,12 +26,12 @@ void MainBodyBoard::BlinkStatusLight()
     {
         if(m_statusLightOn)
         {
-            digitalWrite(STATUS_LIGHT_PIN, LOW);
+            digitalWrite(PINOUT::STATUS_LIGHT_PIN, LOW);
             m_statusLightOn = false;
         }
         else
         {
-            digitalWrite(STATUS_LIGHT_PIN, HIGH);
+            digitalWrite(PINOUT::STATUS_LIGHT_PIN, HIGH);
             m_statusLightOn = true;
         }
         m_statusLightWait = floor(STATUS_LIGHT_FREQUENCY_MS/UPDATE_RATE_MS);
@@ -58,7 +58,7 @@ void MainBodyBoard::updateSubsystems(int timeInterval_ms)
         #endif
 
         #if ENABLE_TEMP
-        m_temp_subsystem.updateFans();
+        m_temperature_subsystem.updateFans();
         #endif
     }
     else
@@ -95,7 +95,7 @@ void MainBodyBoard::disable()
     m_disabled = true;
 
     // set the led to solid
-    digitalWrite(STATUS_LIGHT_PIN, HIGH);
+    digitalWrite(PINOUT::STATUS_LIGHT_PIN, HIGH);
 
     #if ENABLE_DRIVEBASE
     m_drive_base.forceStop();

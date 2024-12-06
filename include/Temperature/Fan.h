@@ -12,12 +12,12 @@
 class Fan
 {
     public:
-    Fan(FAN_PINS pin);
+    Fan(uint8_t fan_id);
     void setPower(int pwm_signal);
     //pwm pin to control fan speed
     // four fans
     private:
-    FAN_PINS m_pin;
+    uint8_t m_fan_id;
 };
 
 #endif

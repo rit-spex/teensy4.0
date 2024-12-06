@@ -12,17 +12,17 @@ TemperatureSubsystem::TemperatureSubsystem() :
 #endif
     m_thermistors
     {
-        Thermistor(THERMISTOR_PINS::THERMISTOR_PIN_0), 
-        Thermistor(THERMISTOR_PINS::THERMISTOR_PIN_1),
-        Thermistor(THERMISTOR_PINS::THERMISTOR_PIN_2),
-        Thermistor(THERMISTOR_PINS::THERMISTOR_PIN_3)
+        Thermistor(0), 
+        Thermistor(1),
+        Thermistor(2),
+        Thermistor(3)
     },
     m_fans
     {
-        Fan(FAN_PINS::FAN_PIN_0),
-        Fan(FAN_PINS::FAN_PIN_1),
-        Fan(FAN_PINS::FAN_PIN_2),
-        Fan(FAN_PINS::FAN_PIN_3)
+        Fan(0),
+        Fan(1),
+        Fan(2),
+        Fan(3)
     }
     #if ENABLE_CAN
     ,m_can(can)

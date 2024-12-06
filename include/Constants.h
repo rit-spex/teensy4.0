@@ -68,6 +68,10 @@ namespace PIDConstants {
     constexpr double KD5 = 0.00;
 };
 
+#define PID_CONSTANTS_KP (double[]){PIDConstants::KP0, PIDConstants::KP1, PIDConstants::KP2, PIDConstants::KP3, PIDConstants::KP4, PIDConstants::KP5}
+#define PID_CONSTANTS_KI (double[]){PIDConstants::KI0, PIDConstants::KI1, PIDConstants::KI2, PIDConstants::KI3, PIDConstants::KI4, PIDConstants::KI5}
+#define PID_CONSTANTS_KD (double[]){PIDConstants::KD0, PIDConstants::KD1, PIDConstants::KD2, PIDConstants::KD3, PIDConstants::KD4, PIDConstants::KD5}
+
 //********************************************************* ARM CONSTANTS *******************************************************
 // I2C device number for ARM
 #define BASE_I2C_ID 15 // brushed motor

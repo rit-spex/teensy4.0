@@ -1,13 +1,13 @@
 #include "../../include/Temperature/Thermistor.h"
 
-Thermistor::Thermistor(THERMISTOR_PINS thermistorPin) : m_thermistorPin(thermistorPin)
+Thermistor::Thermistor(uint8_t thermistor_id) : m_thermistor_id(thermistor_id)
 {
-    pinMode(m_thermistorPin, INPUT);
+    pinMode(THERMISTOR_PINS[thermistor_id], INPUT);
 }
 
 float Thermistor::getTemperature() {
     
-    float voltage = analogRead(m_thermistorPin) * (3.3 / 1023.0) * 1000 ; // convert to mV
+    float voltage = analogRead(THERMISTOR_PINS[m_thermistor_id]) * (3.3 / 1023.0) * 1000 ; // convert to mV
     // Steinhart-Hart equation
     // https://en.wikipedia.org/wiki/Thermistor#B_or_%CE%B2_parameter_equation
     // See if we want to use this or approximation scale from datasheet

@@ -9,16 +9,19 @@ If debug is defined, the corresponding subsystem will be serial printed
 */
 
 // enable when encoders are on the base
-#define ENABLE_ENCODER   false
+#define ENABLE_ENCODER   true
 
 // enable to test with a single encoder
-#define ENABLE_DEMO_ENCODER false
+#define ENABLE_DEMO_ENCODER true
 
 // if the teensy is the main brain - this will enable both xbee and arm
 #define MASTER_TEENSY    true
 
 // this will disable all hardware and simulate the rover. DO NOT ENABLE ON THE ROVER
 #define ENABLE_SIMULATOR false
+
+// change pinout baised on board
+#define ENABLE_PROTOBOARD true
 
 // enable each subsystem
 #define ENABLE_CAN       false

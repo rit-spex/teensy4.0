@@ -3,7 +3,7 @@
 #include "../include/Pinout.h"
 
 #if ENABLE_DEMO_ENCODER
-#include "../include/QuadDecoder.h"
+#include "../include/DriveBase/QuadDecoder.h"
 #endif
 
 // the simulator will emulate the hardware
@@ -37,7 +37,7 @@
   #if ENABLE_DEMO_ENCODER
   // #define ENCODER_RUN_CYCLE_MICROSEC 1000
   // IntervalTimer encoderTimer;
-  QuadratureDecoder demo_encoder{ENC_A_PIN_0, ENC_B_PIN_0};
+  QuadratureDecoder demo_encoder{1};
   #endif
 
 unsigned long currentRunCycle = 0;

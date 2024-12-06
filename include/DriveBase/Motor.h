@@ -16,13 +16,14 @@
 // Motor class for controlling the motors, this is meant to be a generic class for all motors
 class Motor {
     public:
-        Motor(PWM_PINS pwm_pin, int direction);
+        Motor(uint8_t motor_id, int direction);
         ~Motor();
         void setSpeed(float percent);
         float getSpeed();
         void forceStop();
     private:
         Servo m_motor;
+        uint8_t m_motor_id;
         float m_speed;
         int m_direction;
 
