@@ -1,9 +1,6 @@
 #ifndef PID_CONTROLLER_H
 #define PID_CONTROLLER_H
 
-#define OUTPUT_MIN 0
-#define OUTPUT_MAX 500
-
 #include "Constants.h"
 #include <cstdint>
 
@@ -17,11 +14,11 @@ public:
 
 private:
     uint8_t m_PID_id;
-    double kp;
-    double ki;
-    double kd;
-    double integral;
-    double previous_error;
+    double m_kp;
+    double m_ki;
+    double m_kd;
+    double m_integral;
+    double m_previous_error;
 };
 
 #endif // PID_CONTROLLER_H
