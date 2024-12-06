@@ -2,7 +2,7 @@
 
 #if ENABLE_ENCODER
 Wheel::Wheel(int wheel_num, PWM_PINS pwm_pin, int direction, double kp, double ki, double kd)
-     : m_motor(pwm_pin, direction), m_encoder(wheel_num), m_pid(kp, ki, kd), wheel_num(wheel_num){
+     :m_wheel_num(wheel_num), m_motor(pwm_pin, direction), m_encoder(wheel_num), m_pid(kp, ki, kd){
 
      this->m_targetRPM = 0;
      this->m_currentRPM = 0;

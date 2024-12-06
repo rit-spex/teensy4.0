@@ -34,8 +34,9 @@ enum ENC_B_PINS {
     ENC_B_PIN_5 = 15
 };
 
-#define ENC_A_PINS (int[]){ENC_A_PIN_0, ENC_A_PIN_1, ENC_A_PIN_2, ENC_A_PIN_3, ENC_A_PIN_4, ENC_A_PIN_5}
-#define ENC_B_PINS (int[]){ENC_B_PIN_0, ENC_B_PIN_1, ENC_B_PIN_2, ENC_B_PIN_3, ENC_B_PIN_4, ENC_B_PIN_5}
+//      Wheel num               0             1            2            3            4            5
+#define ENC_A_PINS (int[6]){ENC_A_PIN_0, ENC_A_PIN_1, ENC_A_PIN_2, ENC_A_PIN_3, ENC_A_PIN_4, ENC_A_PIN_5}
+#define ENC_B_PINS (int[6]){ENC_B_PIN_0, ENC_B_PIN_1, ENC_B_PIN_2, ENC_B_PIN_3, ENC_B_PIN_4, ENC_B_PIN_5}
 
 //********************************************************* CAN PINOUT *******************************************************
 

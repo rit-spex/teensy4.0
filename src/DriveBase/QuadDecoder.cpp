@@ -1,6 +1,7 @@
 #include "../../include/QuadDecoder.h"
 #include <functional>
 
+#if ENABLE_CUSTOM_ENCODER
 
 enum ENCODER_PULSE_STATES_BITS
 {
@@ -82,8 +83,6 @@ static void update2(){update(2);}
 static void update3(){update(3);}
 static void update4(){update(4);}
 static void update5(){update(5);}
-
-#if ENABLE_CUSTOM_ENCODER
 
 QuadratureDecoder::QuadratureDecoder(uint8_t wheel_num)
 {
@@ -203,14 +202,14 @@ void QuadratureDecoder::resetCount( void )
 
 
 #else
-QuadratureDecoder::QuadratureDecoder(ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin)
- :m_encoder(enc_A_pin, enc_B_pin), enc_A_pin(enc_A_pin), enc_B_pin(enc_B_pin)
+QuadratureDecoder::QuadratureDecoder(int wheel_num)
+ :m_wheel_num(wheel_num), m_encoder(ENC_A_PINS[wheel_num], ENC_B_PINS[wheel_num])
 {
     // set the current head to the start
     m_currentHead = 0;
 
     //empty the saved data
-    for(int i = 0; i<ENCODER_SAVE_SIZE; i++)
+    for(int i = 0; i<ENCODER_COUNTS_SAVE_SIZE; i++)
     {
         m_count[i] = 0;
         m_timeInterval[i] = 0;
@@ -269,21 +268,21 @@ float QuadratureDecoder::getRPM(int time_interval_ms)
 float QuadratureDecoder::getAverageTime()
 {
     float total = 0;
-    for(int i =0; i<ENCODER_SAVE_SIZE; i++)
+    for(int i =0; i<ENCODER_COUNTS_SAVE_SIZE; i++)
     {
         total+= this->m_timeInterval[i];
     }
-    return total/(float)ENCODER_SAVE_SIZE;
+    return total/(float)ENCODER_COUNTS_SAVE_SIZE;
 }
 
 float QuadratureDecoder::getAverageCount()
 {
     float total = 0;
-    for(int i =0; i<ENCODER_SAVE_SIZE; i++)
+    for(int i =0; i<ENCODER_COUNTS_SAVE_SIZE; i++)
     {
         total+= this->m_count[i];
     }
-    return total/(float)ENCODER_SAVE_SIZE;
+    return total/(float)ENCODER_COUNTS_SAVE_SIZE;
 }
 
 #endif

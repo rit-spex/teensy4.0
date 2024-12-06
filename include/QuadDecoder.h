@@ -27,18 +27,18 @@ typedef struct encoderDataStruct
 class QuadratureDecoder {
 public:  
   void begin( void );
+  float getRPM( int time_interval_ms );
 
   #if ENABLE_CUSTOM_ENCODER
 
   QuadratureDecoder(uint8_t wheel_num);
 
-  float getRPM( int time_interval_ms );
   long getCount( void );
   void resetCount( void );
 
   #else
 
-  QuadratureDecoder(ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin);
+  QuadratureDecoder(int wheel_num);
 
   // enter the encoder data to the save data
   void updateCount(int time_interval_ms);
@@ -56,14 +56,7 @@ private:
 
   #else
 
-  // volatile long m_count;
-  // bool          m_pulseStates[ENCODER_PULSE_SAVE_SIZE][2];
-  // uint32_t      m_pulseTimes[ENCODER_PULSE_SAVE_SIZE];
-
   int m_currentHead;
-
-  int enc_A_pin;
-  int enc_B_pin;
 
   // the physical encoder
   Encoder m_encoder;

@@ -63,8 +63,7 @@ class Wheel {
 
     private:
 
-        int wheel_num;
-
+        int m_wheel_num;
         Motor m_motor;
 
         #if ENABLE_ENCODER
