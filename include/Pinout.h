@@ -100,12 +100,9 @@ enum PINOUT
     SHOULDER_SPEED_PIN = 9, // SHOULDER_SPEED_PIN MUST BE ON PIN 9
 
     // 10s
-    ENC_A_PIN_2      = 10, // !!!!! DUPLICATION !!!!!
-    MOTOR_PWM_PIN_5  = 10, // !!!!! DUPLICATION !!!!!
-    ENC_B_PIN_2      = 11, // !!!!! DUPLICATION !!!!!
-    MOTOR_PWM_PIN_6  = 11, // !!!!! DUPLICATION !!!!!
-    ENC_A_PIN_3      = 12, // !!!!! DUPLICATION !!!!!
-    MOTOR_PWM_PIN_4  = 12, // !!!!! DUPLICATION !!!!!
+    MOTOR_PWM_PIN_5  = 10,
+    MOTOR_PWM_PIN_6  = 11,
+    MOTOR_PWM_PIN_4  = 12,
     STATUS_LIGHT_PIN = 13,
     EMPTY_14         = 14,
     ENC_B_PIN_6      = 15,
@@ -139,16 +136,16 @@ enum PINOUT
     EMPTY_39         = 39,
 
     // 40s
-    EMPTY_40 = 40,
-    EMPTY_41 = 41,
-    EMPTY_42 = 42,
-    EMPTY_43 = 43,
-    EMPTY_44 = 44,
-    EMPTY_45 = 45,
-    EMPTY_46 = 46,
-    EMPTY_47 = 47,
-    EMPTY_48 = 48,
-    EMPTY_49 = 49,
+    EMPTY_40    = 40,
+    EMPTY_41    = 41,
+    EMPTY_42    = 42,
+    EMPTY_43    = 43,
+    EMPTY_44    = 44,
+    EMPTY_45    = 45,
+    EMPTY_46    = 46,
+    ENC_A_PIN_2 = 47, // NOT VALID
+    ENC_B_PIN_2 = 48, // NOT VALID
+    ENC_A_PIN_3 = 49, // NOT VALID
 
     // 50s
     FAN_PIN_0 = 50, // NOT VALID
@@ -162,9 +159,9 @@ enum PINOUT
 //********************************************************* DRIVETRAIN PINOUT **************************************************************************
 // Wheel Number                                 1                         2                        3                       4                       5                       6 
 //******************************************************************************************************************************************************
-#define MOTOR_PWM_PINS (int[6]){PINOUT::MOTOR_PWM_PIN_1, PINOUT::MOTOR_PWM_PIN_2, PINOUT::MOTOR_PWM_PIN_3, PINOUT::MOTOR_PWM_PIN_4, PINOUT::MOTOR_PWM_PIN_5, PINOUT::MOTOR_PWM_PIN_6}
-#define ENC_A_PINS     (int[6]){PINOUT::ENC_A_PIN_1,     PINOUT::ENC_A_PIN_2,     PINOUT::ENC_A_PIN_3,     PINOUT::ENC_A_PIN_4,     PINOUT::ENC_A_PIN_5,     PINOUT::ENC_A_PIN_6}
-#define ENC_B_PINS     (int[6]){PINOUT::ENC_B_PIN_1,     PINOUT::ENC_B_PIN_2,     PINOUT::ENC_B_PIN_3,     PINOUT::ENC_B_PIN_4,     PINOUT::ENC_B_PIN_5,     PINOUT::ENC_B_PIN_6}
+#define MOTOR_PWM_PINS (int[NUM_WHEELS]){PINOUT::MOTOR_PWM_PIN_1, PINOUT::MOTOR_PWM_PIN_2, PINOUT::MOTOR_PWM_PIN_3, PINOUT::MOTOR_PWM_PIN_4, PINOUT::MOTOR_PWM_PIN_5, PINOUT::MOTOR_PWM_PIN_6}
+#define ENC_A_PINS     (int[NUM_WHEELS]){PINOUT::ENC_A_PIN_1,     PINOUT::ENC_A_PIN_2,     PINOUT::ENC_A_PIN_3,     PINOUT::ENC_A_PIN_4,     PINOUT::ENC_A_PIN_5,     PINOUT::ENC_A_PIN_6}
+#define ENC_B_PINS     (int[NUM_WHEELS]){PINOUT::ENC_B_PIN_1,     PINOUT::ENC_B_PIN_2,     PINOUT::ENC_B_PIN_3,     PINOUT::ENC_B_PIN_4,     PINOUT::ENC_B_PIN_5,     PINOUT::ENC_B_PIN_6}
       
 //********************************************************* TEMP PINOUT ********************************************************************************
 // FAN Number                                            1                         2                         3                         4 

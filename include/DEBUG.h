@@ -9,10 +9,10 @@ If debug is defined, the corresponding subsystem will be serial printed
 */
 
 // enable when encoders are on the base
-#define ENABLE_ENCODER   true
+#define ENABLE_ENCODER   false
 
 // enable to test with a single encoder
-#define ENABLE_DEMO_ENCODER true
+#define ENABLE_DEMO_ENCODER false
 
 // if the teensy is the main brain - this will enable both xbee and arm
 #define MASTER_TEENSY    true
