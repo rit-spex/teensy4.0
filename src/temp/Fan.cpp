@@ -1,4 +1,4 @@
-#include "../../include/Fan.h"
+#include "../../include/Temp/Fan.h"
 
 Fan::Fan(FAN_PINS pin) : m_pin(pin)
 {
