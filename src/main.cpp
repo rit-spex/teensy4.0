@@ -37,6 +37,7 @@
   #if ENABLE_DEMO_ENCODER
   // #define ENCODER_RUN_CYCLE_MICROSEC 1000
   // IntervalTimer encoderTimer;
+  // Encoder test_encoder {ENC_A_PIN_0, ENC_B_PIN_0};
   QuadratureDecoder demo_encoder{ENC_A_PIN_0, ENC_B_PIN_0};
   #endif
 
@@ -57,12 +58,12 @@ Arm arm;
 #endif
 #endif
 
-// #if ENABLE_DEMO_ENCODER
-// void TEST()
-// {
-//   demo_encoder.updateCount(1);
-// }
-// #endif
+#if ENABLE_DEMO_ENCODER
+void TEST()
+{
+  demo_encoder.updateCount(1);
+}
+#endif
 
 void setup()
 {
@@ -112,6 +113,7 @@ void setup()
   #endif
 
   #if ENABLE_DEMO_ENCODER
+  // test_encoder.write(0);
   demo_encoder.begin();
   // encoderTimer.begin(TEST, 1000);
   #endif
@@ -126,9 +128,10 @@ void loop()
   if(millis() >= UPDATE_RATE_MS * currentRunCycle)
   {
     #if ENABLE_SERIAL
-      Serial.print("current cycle: ");
-      Serial.println((int)currentRunCycle);
+      // Serial.print("current cycle: ");
+      // Serial.println((int)currentRunCycle);
 
+      // Serial.println(test_encoder.read());
       #if ENABLE_DEMO_ENCODER
       Serial.println(demo_encoder.getRPM(millis() - UPDATE_RATE_MS * (currentRunCycle-1)));
       #endif

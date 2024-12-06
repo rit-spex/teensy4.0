@@ -18,6 +18,7 @@ private:
     double kd;
     double integral;
     double previous_error;
+    double previous_output;
 };
 
 #endif // PID_CONTROLLER_H

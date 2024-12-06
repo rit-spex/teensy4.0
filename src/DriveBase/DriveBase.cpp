@@ -15,12 +15,12 @@ DriveBase::DriveBase():
 
 #if ENABLE_ENCODER
 m_wheels{
-        Wheel(PWM_PIN_0, LEFTDIRECTION , ENC_A_PIN_0, ENC_B_PIN_0, PIDConstants::KP0, PIDConstants::KI0, PIDConstants::KD0),
-        Wheel(PWM_PIN_1, LEFTDIRECTION , ENC_A_PIN_1, ENC_B_PIN_1, PIDConstants::KP1, PIDConstants::KI1, PIDConstants::KD1),
-        Wheel(PWM_PIN_2, LEFTDIRECTION , ENC_A_PIN_2, ENC_B_PIN_2, PIDConstants::KP2, PIDConstants::KI2, PIDConstants::KD2),
-        Wheel(PWM_PIN_3, RIGHTDIRECTION, ENC_A_PIN_3, ENC_B_PIN_3, PIDConstants::KP3, PIDConstants::KI3, PIDConstants::KD3),
-        Wheel(PWM_PIN_4, RIGHTDIRECTION, ENC_A_PIN_4, ENC_B_PIN_4, PIDConstants::KP4, PIDConstants::KI4, PIDConstants::KD4),
-        Wheel(PWM_PIN_5, RIGHTDIRECTION, ENC_A_PIN_5, ENC_B_PIN_5, PIDConstants::KP5, PIDConstants::KI5, PIDConstants::KD5)}
+        Wheel(0, PWM_PIN_0, LEFTDIRECTION , PIDConstants::KP0, PIDConstants::KI0, PIDConstants::KD0),
+        Wheel(1, PWM_PIN_1, LEFTDIRECTION , PIDConstants::KP1, PIDConstants::KI1, PIDConstants::KD1),
+        Wheel(2, PWM_PIN_2, LEFTDIRECTION , PIDConstants::KP2, PIDConstants::KI2, PIDConstants::KD2),
+        Wheel(3, PWM_PIN_3, RIGHTDIRECTION, PIDConstants::KP3, PIDConstants::KI3, PIDConstants::KD3),
+        Wheel(4, PWM_PIN_4, RIGHTDIRECTION, PIDConstants::KP4, PIDConstants::KI4, PIDConstants::KD4),
+        Wheel(5, PWM_PIN_5, RIGHTDIRECTION, PIDConstants::KP5, PIDConstants::KI5, PIDConstants::KD5)}
 #else
 m_wheels{
         Wheel(PWM_PIN_0, LEFTDIRECTION),

@@ -1,22 +1,25 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-//********************************************************* GENERAL CONSTANTS *******************************************************
+//********************************************************* TIMING CONSTANTS *******************************************************
 // the larger number will led to slower speeds
 #define STATUS_LIGHT_FREQUENCY_MS 200
 
 // Update rate for the rover
 #define UPDATE_RATE_MS 40
 
+#define UPDATE_RATE_SEC ((double)UPDATE_RATE_MS/1000)
+
 //milliseconds in a minute
 #define MS_IN_MIN 60000
 
-//********************************************************* DRIVETRAIN CONSTANTS *******************************************************
+// microseconds to milliseconds
+#define US_TO_MIN(us) ((float)us/60000000)
+
+//********************************************************* MOTOR CONSTANTS *******************************************************
+
 //The max speed of the motors
 #define PERCENT_MAX 0.7
-
-// Max RPM of the motors max 1100 with no load
-#define MAX_RPM 1100
 
 // the PMW values of the sparkMAX
 #define SPARK_MAX_MAX_SPEED (1500 + 500 * PERCENT_MAX)
@@ -25,7 +28,7 @@
 #define MIN_REVERSE 1475
 #define SPARK_MAX_MIN_SPEED (1500 - 500 * PERCENT_MAX)
 
-#define COUNTS_PER_REV 2048
+//********************************************************* DRIVETRAIN CONSTANTS *******************************************************
 
 // number of wheels on the rover
 #define NUM_WHEELS 6
@@ -35,8 +38,8 @@
 #define RIGHTDIRECTION 1 //positive 1 or negitive -1
 
 // the time it takes to go from 0 to 100
-#define RAMP_UP_TIME   3000 //milliseconds
-#define RAMP_DOWN_TIME 3000  //milliseconds
+#define RAMP_UP_TIME   40 //milliseconds
+#define RAMP_DOWN_TIME 40  //milliseconds
 
 // The percent Increase or Decrease per cycle
 #define RAMP_UP_RATE_PERCENT   ((1.00)/(RAMP_UP_TIME/UPDATE_RATE_MS))
@@ -45,28 +48,46 @@
 //The max the speeds on each side can differ before the rover tips
 #define MAX_DIFFERENCE_PERCENT 0.07
 
+//********************************************************* PID CONSTANTS *******************************************************
+
 namespace PIDConstants {
-    constexpr double KP0 = 0.01;
-    constexpr double KP1 = 0.01;
-    constexpr double KP2 = 0.01;
-    constexpr double KP3 = 0.01;
-    constexpr double KP4 = 0.01;
-    constexpr double KP5 = 0.01;
+    constexpr double KP0 = 0.00025;
+    constexpr double KP1 = 0.00025;
+    constexpr double KP2 = 0.00025;
+    constexpr double KP3 = 0.00025;
+    constexpr double KP4 = 0.00025;
+    constexpr double KP5 = 0.00025;
 
-    constexpr double KI0 = 0.0;
-    constexpr double KI1 = 0.0;
-    constexpr double KI2 = 0.0;
-    constexpr double KI3 = 0.0;
-    constexpr double KI4 = 0.0;
-    constexpr double KI5 = 0.0;
+    constexpr double KI0 = 0.00025;
+    constexpr double KI1 = 0.00025;
+    constexpr double KI2 = 0.00025;
+    constexpr double KI3 = 0.00025;
+    constexpr double KI4 = 0.00025;
+    constexpr double KI5 = 0.00025;
 
-    constexpr double KD0 = 0.00;
-    constexpr double KD1 = 0.00;
-    constexpr double KD2 = 0.00;
-    constexpr double KD3 = 0.00;
-    constexpr double KD4 = 0.00;
-    constexpr double KD5 = 0.00;
+    constexpr double KD0 = 0.0000025;
+    constexpr double KD1 = 0.0000025;
+    constexpr double KD2 = 0.0000025;
+    constexpr double KD3 = 0.0000025;
+    constexpr double KD4 = 0.0000025;
+    constexpr double KD5 = 0.0000025;
 };
+
+//********************************************************* ENCODER CONSTANTS *******************************************************
+
+// how much data to save for averaging
+#define ENCODER_COUNTS_SAVE_SIZE 1//5 //15
+#define ENCODER_PULSE_SAVE_SIZE 2 // must be 2 or greater
+#define ENCODER_NUM 6
+
+#define PULSE_A 0
+#define PULSE_B 1
+
+// Count per rotation
+#define COUNTS_PER_REV 2048
+
+// Max RPM of the motors max 1100 with no load
+#define MAX_RPM 1100
 
 //********************************************************* ARM CONSTANTS *******************************************************
 // I2C device number for ARM
@@ -94,6 +115,7 @@ namespace PIDConstants {
 #define MSG_LENGTH 8
 
 //******************************************************** XBEE CONSTANTS *******************************************************
+// Amount of missed messages from the xbee before the teensy disables
 #define NO_MESSAGE_ERROR_NUM 25 // 1 sec
 
 #endif // CONSTANTS_H

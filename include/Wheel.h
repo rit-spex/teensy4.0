@@ -29,7 +29,7 @@ class Wheel {
         * @param enc_A_pin The A pin of the wheel's quadrature encoder
         * @param enc_B_pin The B pin of the wheel's quadrature encoder
         */
-        Wheel(PWM_PINS pwm_pin, int direction, ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin, double kp, double ki, double kd);
+        Wheel(int wheel_num, PWM_PINS pwm_pin, int direction, double kp, double ki, double kd);
         #else
         /*
         * Constructor for the wheel class if there is no encoder
@@ -62,6 +62,8 @@ class Wheel {
         void forceStop();
 
     private:
+
+        int wheel_num;
 
         Motor m_motor;
 

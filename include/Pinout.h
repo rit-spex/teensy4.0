@@ -8,9 +8,9 @@
 //********************************************************* DRIVETRAIN PINOUT ****************************************************
 
 enum PWM_PINS {
-    PWM_PIN_0 = 2,
+    PWM_PIN_0 = 4,//2,
     PWM_PIN_1 = 3,
-    PWM_PIN_2 = 4,
+    PWM_PIN_2 = 2,//4,
     PWM_PIN_3 = 12,//5, // is 12 on proto-board
     PWM_PIN_4 = 10,//6, // is 10 on proto-board
     PWM_PIN_5 = 11//7  // is 11 on proto-board
@@ -33,6 +33,9 @@ enum ENC_B_PINS {
     ENC_B_PIN_4 = 17,
     ENC_B_PIN_5 = 15
 };
+
+#define ENC_A_PINS (int[]){ENC_A_PIN_0, ENC_A_PIN_1, ENC_A_PIN_2, ENC_A_PIN_3, ENC_A_PIN_4, ENC_A_PIN_5}
+#define ENC_B_PINS (int[]){ENC_B_PIN_0, ENC_B_PIN_1, ENC_B_PIN_2, ENC_B_PIN_3, ENC_B_PIN_4, ENC_B_PIN_5}
 
 //********************************************************* CAN PINOUT *******************************************************
 

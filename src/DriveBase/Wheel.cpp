@@ -1,8 +1,8 @@
 #include "../../include/Wheel.h"
 
 #if ENABLE_ENCODER
-Wheel::Wheel(PWM_PINS pwm_pin, int direction, ENC_A_PINS enc_A_pin, ENC_B_PINS enc_B_pin, double kp, double ki, double kd)
-     : m_motor(pwm_pin, direction), m_encoder(enc_A_pin, enc_B_pin), m_pid(kp, ki, kd){
+Wheel::Wheel(int wheel_num, PWM_PINS pwm_pin, int direction, double kp, double ki, double kd)
+     : m_motor(pwm_pin, direction), m_encoder(wheel_num), m_pid(kp, ki, kd), wheel_num(wheel_num){
 
      this->m_targetRPM = 0;
      this->m_currentRPM = 0;
@@ -35,6 +35,7 @@ void Wheel::updatePID(int timeInterval_ms)
 {
     this->m_currentRPM = this->m_encoder.getRPM(timeInterval_ms);
     float pidOutput = this->m_pid.update(this->m_targetRPM, this->m_currentRPM);
+    Serial.println(pidOutput);
     this->setSpeed(pidOutput);
 }
 

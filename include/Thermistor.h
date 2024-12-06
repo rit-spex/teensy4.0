@@ -34,6 +34,7 @@ class Thermistor {
         */
         float getTemperature();
     private:
+        
         /*
         * The pin that the thermistor is connected to
         */
