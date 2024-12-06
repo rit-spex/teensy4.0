@@ -26,7 +26,7 @@ class Wheel {
         * Constructor for the wheel class
         * @param wheel_id: which wheel is the current one
         */
-        Wheel(uint8_t wheel_id, int direction);
+        Wheel(uint8_t wheel_id);
 
         /*
         * Adjust's the PWM signal to the wheel to match the target speed

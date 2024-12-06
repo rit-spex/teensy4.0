@@ -1,12 +1,12 @@
 #include "../../include/DriveBase/Motor.h"
 
 //constructor
-Motor::Motor(uint8_t motor_id, int direction)
+Motor::Motor(uint8_t motor_id)
 {
     m_motor_id = motor_id;
     m_motor.attach(MOTOR_PWM_PINS[motor_id], SPARK_MAX_MIN_SPEED, SPARK_MAX_MAX_SPEED);  // Assuming 'motor' is a member variable of the Motor class
     m_speed = 0;
-    m_direction = direction;
+    m_direction = MOTORS_DIR[m_motor_id];
 }
 
 Motor::~Motor()

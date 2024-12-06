@@ -31,8 +31,8 @@
 #define NUM_WHEELS 6
 
 // The Direction of the motor
-#define LEFTDIRECTION  -1 //positive 1 or negitive -1
-#define RIGHTDIRECTION 1 //positive 1 or negitive -1
+#define LEFT_DIRECTION  -1 //positive 1 or negitive -1
+#define RIGHT_DIRECTION 1 //positive 1 or negitive -1
 
 // the time it takes to go from 0 to 100
 #define RAMP_UP_TIME   3000 //milliseconds
@@ -68,9 +68,10 @@ namespace PIDConstants {
     constexpr double KD5 = 0.00;
 };
 
-#define PID_CONSTANTS_KP (double[]){PIDConstants::KP0, PIDConstants::KP1, PIDConstants::KP2, PIDConstants::KP3, PIDConstants::KP4, PIDConstants::KP5}
-#define PID_CONSTANTS_KI (double[]){PIDConstants::KI0, PIDConstants::KI1, PIDConstants::KI2, PIDConstants::KI3, PIDConstants::KI4, PIDConstants::KI5}
-#define PID_CONSTANTS_KD (double[]){PIDConstants::KD0, PIDConstants::KD1, PIDConstants::KD2, PIDConstants::KD3, PIDConstants::KD4, PIDConstants::KD5}
+#define MOTORS_DIR       (int[NUM_WHEELS]) {LEFT_DIRECTION, LEFT_DIRECTION, LEFT_DIRECTION, RIGHT_DIRECTION, RIGHT_DIRECTION, RIGHT_DIRECTION}
+#define PID_CONSTANTS_KP (double[NUM_WHEELS]){PIDConstants::KP0, PIDConstants::KP1, PIDConstants::KP2, PIDConstants::KP3, PIDConstants::KP4, PIDConstants::KP5}
+#define PID_CONSTANTS_KI (double[NUM_WHEELS]){PIDConstants::KI0, PIDConstants::KI1, PIDConstants::KI2, PIDConstants::KI3, PIDConstants::KI4, PIDConstants::KI5}
+#define PID_CONSTANTS_KD (double[NUM_WHEELS]){PIDConstants::KD0, PIDConstants::KD1, PIDConstants::KD2, PIDConstants::KD3, PIDConstants::KD4, PIDConstants::KD5}
 
 //********************************************************* ARM CONSTANTS *******************************************************
 // I2C device number for ARM

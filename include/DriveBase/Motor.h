@@ -16,7 +16,7 @@
 // Motor class for controlling the motors, this is meant to be a generic class for all motors
 class Motor {
     public:
-        Motor(uint8_t motor_id, int direction);
+        Motor(uint8_t motor_id);
         ~Motor();
         void setSpeed(float percent);
         float getSpeed();

@@ -13,13 +13,7 @@ DriveBase::DriveBase(CAN *can):
 DriveBase::DriveBase():
 #endif
 
-m_wheels{
-        Wheel(0, LEFTDIRECTION),
-        Wheel(1, LEFTDIRECTION),
-        Wheel(2, LEFTDIRECTION),
-        Wheel(3, RIGHTDIRECTION),
-        Wheel(4, RIGHTDIRECTION),
-        Wheel(5, RIGHTDIRECTION)}
+m_wheels{ Wheel(0), Wheel(1), Wheel(2), Wheel(3), Wheel(4), Wheel(5)}
 
 {
     #if ENABLE_CAN
