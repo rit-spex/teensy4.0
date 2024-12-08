@@ -18,13 +18,13 @@ class Motor {
     public:
         Motor(uint8_t motor_id);
         ~Motor();
-        void setSpeed(float percent);
-        float getSpeed();
+        void setPercent(float wantedPercent);
+        float getPercent();
         void forceStop();
     private:
         Servo m_motor;
         uint8_t m_motor_id;
-        float m_speed;
+        float m_currPercent;
         int m_direction;
 
         void updateMotor();

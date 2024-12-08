@@ -14,7 +14,7 @@ Wheel::Wheel(uint8_t wheel_id):
 
 void Wheel::setSpeed(float targetSpeed)
 {
-    m_motor.setSpeed(targetSpeed);
+    m_motor.setPercent(targetSpeed);
 }
 
 #if ENABLE_ENCODER

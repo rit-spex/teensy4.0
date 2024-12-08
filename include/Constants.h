@@ -12,18 +12,18 @@
 #define MS_IN_MIN 60000
 
 //********************************************************* DRIVETRAIN CONSTANTS *******************************************************
-//The max speed of the motors
-#define PERCENT_MAX 0.7
+//The max percent of the motors
+#define MOTOR_MAX_PERCENT 0.7
 
 // Max RPM of the motors max 1100 with no load
 #define MAX_RPM 1100
 
 // the PMW values of the sparkMAX
-#define SPARK_MAX_MAX_SPEED (1500 + 500 * PERCENT_MAX)
-#define MIN_FORWARD 1525
+#define SPARK_MAX_MAX_DUTY_CYCLE (1500 + 500 * MOTOR_MAX_PERCENT)
+#define MIN_FORWARD 1525 // NOT USED
 #define NEUTRAL 1500
-#define MIN_REVERSE 1475
-#define SPARK_MAX_MIN_SPEED (1500 - 500 * PERCENT_MAX)
+#define MIN_REVERSE 1475 // NOT USED
+#define SPARK_MAX_MIN_DUTY_CYCLE (1500 - 500 * MOTOR_MAX_PERCENT)
 
 #define COUNTS_PER_REV 2048
 
@@ -31,16 +31,16 @@
 #define NUM_WHEELS 6
 
 // The Direction of the motor
-#define LEFT_DIRECTION  -1 //positive 1 or negitive -1
-#define RIGHT_DIRECTION 1 //positive 1 or negitive -1
+#define MOTOR_LEFT_SIGN  -1 //positive 1 or negitive -1
+#define MOTOR_RIGHT_SIGN 1 //positive 1 or negitive -1
 
 // the time it takes to go from 0 to 100
-#define RAMP_UP_TIME   3000 //milliseconds
-#define RAMP_DOWN_TIME 3000  //milliseconds
+#define MOTOR_RAMP_UP_TIME   3000 //milliseconds
+#define MOTOR_RAMP_DOWN_TIME 3000  //milliseconds
 
 // The percent Increase or Decrease per cycle
-#define RAMP_UP_RATE_PERCENT   ((1.00)/(RAMP_UP_TIME/UPDATE_RATE_MS))
-#define RAMP_DOWN_RATE_PERCENT ((1.00)/(RAMP_DOWN_TIME/UPDATE_RATE_MS))
+#define MOTOR_RAMP_UP_RATE_PERCENT   ((1.00)/(MOTOR_RAMP_UP_TIME/UPDATE_RATE_MS))
+#define MOTOR_RAMP_DOWN_RATE_PERCENT ((1.00)/(MOTOR_RAMP_DOWN_TIME/UPDATE_RATE_MS))
 
 //The max the speeds on each side can differ before the rover tips
 #define MAX_DIFFERENCE_PERCENT 0.07
@@ -68,7 +68,7 @@ namespace PIDConstants {
     constexpr double KD5 = 0.00;
 };
 
-#define MOTORS_DIR       (int[NUM_WHEELS]) {LEFT_DIRECTION, LEFT_DIRECTION, LEFT_DIRECTION, RIGHT_DIRECTION, RIGHT_DIRECTION, RIGHT_DIRECTION}
+#define MOTORS_DIR       (int[NUM_WHEELS]) {MOTOR_LEFT_SIGN, MOTOR_LEFT_SIGN, MOTOR_LEFT_SIGN, MOTOR_RIGHT_SIGN, MOTOR_RIGHT_SIGN, MOTOR_RIGHT_SIGN}
 #define PID_CONSTANTS_KP (double[NUM_WHEELS]){PIDConstants::KP0, PIDConstants::KP1, PIDConstants::KP2, PIDConstants::KP3, PIDConstants::KP4, PIDConstants::KP5}
 #define PID_CONSTANTS_KI (double[NUM_WHEELS]){PIDConstants::KI0, PIDConstants::KI1, PIDConstants::KI2, PIDConstants::KI3, PIDConstants::KI4, PIDConstants::KI5}
 #define PID_CONSTANTS_KD (double[NUM_WHEELS]){PIDConstants::KD0, PIDConstants::KD1, PIDConstants::KD2, PIDConstants::KD3, PIDConstants::KD4, PIDConstants::KD5}

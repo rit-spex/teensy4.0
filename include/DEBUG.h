@@ -23,6 +23,9 @@ If debug is defined, the corresponding subsystem will be serial printed
 // change pinout baised on board
 #define ENABLE_PROTOBOARD true
 
+// toggle the motors ramp, manually turn off when using PID
+#define ENABLE_MOTOR_RAMP true
+
 // enable each subsystem
 #define ENABLE_CAN       false
 #define ENABLE_DRIVEBASE true

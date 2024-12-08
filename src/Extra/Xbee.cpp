@@ -129,7 +129,7 @@ void Xbee::parseMessage()
         if(input > 200 || input < 0){}
         else
         {
-            float value = ((input - 100.0)/100.0) * PERCENT_MAX;
+            float value = ((input - 100.0)/100.0) * MOTOR_MAX_PERCENT;
             this->m_axisvalues[i][m_currentHead] = value;
         }
     }
