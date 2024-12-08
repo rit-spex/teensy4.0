@@ -2,8 +2,8 @@
 #define CONSTANTS_H
 
 //********************************************************* GENERAL CONSTANTS *******************************************************
-// the larger number will led to slower speeds
-#define STATUS_LIGHT_FREQUENCY_MS 200
+// the larger number will led to slower frequency
+#define MBB_STATUS_LIGHT_FREQUENCY_MS 200
 
 // Update rate for the rover
 #define UPDATE_RATE_MS 40
@@ -16,13 +16,13 @@
 #define MOTOR_MAX_PERCENT 0.7
 
 // Max RPM of the motors max 1100 with no load
-#define MAX_RPM 1100
+#define MOTOR_MAX_RPM 1100
 
 // the PMW values of the sparkMAX
 #define SPARK_MAX_MAX_DUTY_CYCLE (1500 + 500 * MOTOR_MAX_PERCENT)
-#define MIN_FORWARD 1525 // NOT USED
-#define NEUTRAL 1500
-#define MIN_REVERSE 1475 // NOT USED
+#define SPARK_MAX_MIN_FORWARD 1525 // NOT USED
+#define SPARK_MAX_NEUTRAL_DUTY_CYCLE 1500
+#define SPARK_MAX_MIN_REVERSE 1475 // NOT USED
 #define SPARK_MAX_MIN_DUTY_CYCLE (1500 - 500 * MOTOR_MAX_PERCENT)
 
 #define COUNTS_PER_REV 2048
@@ -42,8 +42,8 @@
 #define MOTOR_RAMP_UP_RATE_PERCENT   ((1.00)/(MOTOR_RAMP_UP_TIME/UPDATE_RATE_MS))
 #define MOTOR_RAMP_DOWN_RATE_PERCENT ((1.00)/(MOTOR_RAMP_DOWN_TIME/UPDATE_RATE_MS))
 
-//The max the speeds on each side can differ before the rover tips
-#define MAX_DIFFERENCE_PERCENT 0.07
+//The max the percentage on each side can differ before the rover tips
+#define DRIVEBASE_MAX_DIFFERENCE_PERCENT 0.07
 
 namespace PIDConstants {
     constexpr double KP0 = 0.01;
@@ -75,10 +75,10 @@ namespace PIDConstants {
 
 //********************************************************* ARM CONSTANTS *******************************************************
 // I2C device number for ARM
-#define BASE_I2C_ID 15 // brushed motor
-#define BASE_MAX_SPEED 800
-#define CLAW_I2C_ID 16 // stepper motor
-#define CLAW_MAX_SPEED (200 * 10000) // 100 steps per second
+#define ARM_BASE_I2C_ID 15 // brushed motor
+#define ARM_BASE_MAX_SPEED 800
+#define ARM_CLAW_I2C_ID 16 // stepper motor
+#define ARM_CLAW_MAX_SPEED (200 * 10000) // 100 steps per second
 
 //********************************************************* TEMP CONSTANTS *******************************************************
 // FAN CONSTANTS
@@ -86,19 +86,19 @@ namespace PIDConstants {
 #define NUM_FANS 4
 
 // this is in celsius
-#define MAX_TEMP 44 //110 ferinheight
-#define MIN_TEMP 15 // 60 ferinheight
+#define TEMP_MAX 44 //110 ferinheight
+#define TEMP_MIN 15 // 60 ferinheight
 
 //this is duty cycle pwm Signal
-#define MAX_FAN_SPEED 255
-#define MIN_FAN_SPEED 51
+#define FAN_MAX_PWM 255
+#define FAN_MIN_PWM 51
 
 //********************************************************* CAN CONSTANTS *******************************************************
 #define ActiveCAN CAN::CAN_MODE::CAN2
 #define CAN_BAUDRATE 500000
-#define MSG_LENGTH 8
+#define CAN_MSG_LENGTH 8
 
 //******************************************************** XBEE CONSTANTS *******************************************************
-#define NO_MESSAGE_ERROR_NUM 25 // 1 sec
+#define XBEE_NO_MESSAGE_ERROR_NUM 25 // 1 sec
 
 #endif // CONSTANTS_H

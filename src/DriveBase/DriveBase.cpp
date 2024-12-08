@@ -121,12 +121,12 @@ void DriveBase::drive(float left_axis, float right_axis)
     // this is to prevent the rover from tipping over
     if (fabs(fabs(left_axis) - fabs(right_axis)) < (float)(MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT))
     {
-        updateSingleWheelSpeed(0, left_axis);
-        updateSingleWheelSpeed(1, left_axis);
-        updateSingleWheelSpeed(2, left_axis);
-        updateSingleWheelSpeed(3, right_axis);
-        updateSingleWheelSpeed(4, right_axis);
-        updateSingleWheelSpeed(5, right_axis);
+        updateSingleWheelPercent(0, left_axis);
+        updateSingleWheelPercent(1, left_axis);
+        updateSingleWheelPercent(2, left_axis);
+        updateSingleWheelPercent(3, right_axis);
+        updateSingleWheelPercent(4, right_axis);
+        updateSingleWheelPercent(5, right_axis);
     }
 
     // If joystick value are difference is greater than the max difference
@@ -134,28 +134,28 @@ void DriveBase::drive(float left_axis, float right_axis)
     else if (fabs(left_axis) > fabs(right_axis))
     {
         int isNegative = left_axis/fabs(left_axis);
-        updateSingleWheelSpeed(0, left_axis);
-        updateSingleWheelSpeed(1, left_axis);
-        updateSingleWheelSpeed(2, left_axis);
-        updateSingleWheelSpeed(3, (left_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
-        updateSingleWheelSpeed(4, (left_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
-        updateSingleWheelSpeed(5, (left_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
+        updateSingleWheelPercent(0, left_axis);
+        updateSingleWheelPercent(1, left_axis);
+        updateSingleWheelPercent(2, left_axis);
+        updateSingleWheelPercent(3, (left_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
+        updateSingleWheelPercent(4, (left_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
+        updateSingleWheelPercent(5, (left_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
     }
     else if (fabs(left_axis)<fabs(right_axis))
     {
         int isNegative = right_axis/fabs(right_axis);
-        updateSingleWheelSpeed(0, (right_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
-        updateSingleWheelSpeed(1, (right_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
-        updateSingleWheelSpeed(2, (right_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
-        updateSingleWheelSpeed(3, right_axis);
-        updateSingleWheelSpeed(4, right_axis);
-        updateSingleWheelSpeed(5, right_axis);
+        updateSingleWheelPercent(0, (right_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
+        updateSingleWheelPercent(1, (right_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
+        updateSingleWheelPercent(2, (right_axis - MAX_DIFFERENCE_PERCENT/MOTOR_MAX_PERCENT * isNegative));
+        updateSingleWheelPercent(3, right_axis);
+        updateSingleWheelPercent(4, right_axis);
+        updateSingleWheelPercent(5, right_axis);
     }
 }
 
-void DriveBase::updateSingleWheelSpeed(int wheelIndex, float targetSpeed)
+void DriveBase::updateSingleWheelPercent(int wheelIndex, float targetPercent)
 {
-    m_wheels[wheelIndex].setSpeed(targetSpeed);
+    m_wheels[wheelIndex].setPercent(targetPercent);
 }
 
 #endif

@@ -12,9 +12,9 @@ Wheel::Wheel(uint8_t wheel_id):
     m_motor(wheel_id){}
 #endif
 
-void Wheel::setSpeed(float targetSpeed)
+void Wheel::setPercent(float targetPercent)
 {
-    m_motor.setPercent(targetSpeed);
+    m_motor.setPercent(targetPercent);
 }
 
 #if ENABLE_ENCODER
@@ -35,7 +35,7 @@ void Wheel::updatePID(int timeInterval_ms)
 {
     this->m_currentRPM = this->m_encoder.getRPM(timeInterval_ms);
     float pidOutput = this->m_pid.update(this->m_targetRPM, this->m_currentRPM);
-    this->setSpeed(pidOutput);
+    this->setPercent(pidOutput);
 }
 
 #endif

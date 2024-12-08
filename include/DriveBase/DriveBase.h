@@ -32,11 +32,11 @@ class DriveBase {
         #endif
 
         #if ENABLE_ENCODER
-        // Updates the RPM of the rover's wheels. motor final speed is calculated by the PID controller
+        // Updates the RPM of the rover's wheels. motor final percent is calculated by the PID controller
         void updateRPM(int timeInterval_ms);
         #else
-        // Updates the speed of the rover's wheel. Speed is percent
-        void updateSingleWheelSpeed(int wheelIndex, float targetSpeed);
+        // Updates the percent of the rover's wheel.
+        void updateSingleWheelPercent(int wheelIndex, float targetPercent);
         #endif
         void drive(float left_axis, float right_axis);
 

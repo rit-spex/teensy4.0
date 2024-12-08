@@ -18,7 +18,7 @@ Motor::~Motor()
 //write to the motor
 void Motor::setPercent(float wantedPercent)
 {
-    //First check if the target speed is within the bounds of -1 to 1
+    //First check if the target percent is within the bounds of -1 to 1
     if(wantedPercent < -MOTOR_MAX_PERCENT)
     {
         wantedPercent = -MOTOR_MAX_PERCENT;
@@ -84,7 +84,7 @@ void Motor::setPercent(float wantedPercent)
    updateMotor();
 }
 
-// return the speed that the motor is set to
+// return the percent that the motor is set to
 float Motor::getPercent()
 {
     return m_currPercent;

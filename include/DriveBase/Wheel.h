@@ -6,7 +6,7 @@ Date Created: 1/23/2024
 This file defines the wheel class for the rover.
 
 This class is responsible for controlling each individual wheel of the rover
-based on its target speed.
+based on its target RPM or percentage.
 */
 
 #ifndef WHEEL_H
@@ -29,10 +29,10 @@ class Wheel {
         Wheel(uint8_t wheel_id);
 
         /*
-        * Adjust's the PWM signal to the wheel to match the target speed
-        * @param targetSpeed The target speed of the wheel
+        * Adjust's the PWM signal to the wheel to match the target percent
+        * @param targetPercent The target percent of the wheel
         */
-        void setSpeed(float targetSpeed);
+        void setPercent(float targetPercent);
 
 
         #if ENABLE_ENCODER
